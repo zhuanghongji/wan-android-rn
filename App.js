@@ -6,44 +6,84 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Image } from 'react-native';
+import { 
+  StackNavigator, 
+  TabNavigator, 
+  TabBarBottom,
+} from 'react-navigation';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+// 首页
+import ArticleScreen from './src/pages/main/article/ArticleScreen'
+import TodoScreen from './src/pages/main/todo/TodoScreen'
+import ExploreScreen from './src/pages/main/explore/ExploreScreen'
+import MineScreen from './src/pages/main/mine/MineScreen'
 
-type Props = {};
-export default class App extends Component<Props> {
+// 搜索
+import SearchScreen from './src/pages/search/SearchScreen'
+
+const MainStack = TabNavigator(
+  {
+    Article: {
+      screen: ArticleScreen,
+    },
+    Todo: {
+      screen: TodoScreen,
+    },
+    Explore: {
+      screen: ExploreScreen,
+    },
+    Mine: {
+      screen: MineScreen,
+    }
+  },
+  {
+    navigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let icon;
+        if (routeName === 'Article') {
+          icon = focused ? require('./src/pages/main/article/res/article_focused.png') 
+            : require('./src/pages/main/article/res/article_normal.png');
+        } else if (routeName === 'Todo') {
+          icon = focused ? require('./src/pages/main/todo/res/todo_focused.png') 
+            : require('./src/pages/main/todo/res/todo_normal.png');
+        } else if (routeName === 'Explore') {
+          icon = focused ? require('./src/pages/main/explore/res/explore_focused.png') 
+            : require('./src/pages/main/explore/res/explore_normal.png');
+        } else if (routeName === 'Mine') {
+          icon = focused ? require('./src/pages/main/mine/res/mine_focused.png') 
+            : require('./src/pages/main/mine/res/mine_normal.png');
+        }
+        return <Image style={{ width: 24, height: 24 }} source={icon} />
+      },
+    }),
+    tabBarComponent: TabBarBottom,
+    tabBarPosition: 'bottom',
+    tabBarOptions: {
+      activeTintColor: '#235C87',
+      inactiveTintColor: '#bdbdbd',
+    },
+    animationEnabled: false,
+    swipeEnabled: false,
+  }
+)
+
+const RootStack = StackNavigator(
+  {
+    Main: {
+      screen: MainStack,
+    },
+    Search: {
+      screen: SearchScreen,
+    }
+  }
+)
+
+export default class App extends Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
+    return <RootStack />
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
