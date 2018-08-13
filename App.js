@@ -7,11 +7,10 @@
  */
 
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+import { Image, Button } from 'react-native';
 import { 
-  StackNavigator, 
-  TabNavigator, 
-  TabBarBottom,
+  createStackNavigator,
+  createBottomTabNavigator,
 } from 'react-navigation';
 
 // 首页
@@ -23,7 +22,7 @@ import MineScreen from './src/pages/main/mine/MineScreen'
 // 搜索
 import SearchScreen from './src/pages/search/SearchScreen'
 
-const MainStack = TabNavigator(
+const MainStack = createBottomTabNavigator(
   {
     Article: {
       screen: ArticleScreen,
@@ -59,7 +58,6 @@ const MainStack = TabNavigator(
         return <Image style={{ width: 24, height: 24 }} source={icon} />
       },
     }),
-    tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     tabBarOptions: {
       activeTintColor: '#235C87',
@@ -70,10 +68,13 @@ const MainStack = TabNavigator(
   }
 )
 
-const RootStack = StackNavigator(
+const RootStack = createStackNavigator(
   {
     Main: {
       screen: MainStack,
+      navigationOptions: {
+        title: 'WAN ANDROID',
+      }
     },
     Search: {
       screen: SearchScreen,

@@ -3,10 +3,15 @@ import {
   StyleSheet,
   View,
   Text,
+  Button,
 } from 'react-native'
 
 
 export default class ArticleScreen extends Component {
+  static navigationOptions = {
+    title: '文章',
+  }
+
   render() {
     return (
       <View style={styles.container}>

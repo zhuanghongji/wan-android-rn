@@ -7,6 +7,10 @@ import {
 
 
 export default class ArticleScreen extends Component {
+  static navigationOptions = {
+    title: '待办',
+  }
+
   render() {
     return (
       <View style={styles.container}>
