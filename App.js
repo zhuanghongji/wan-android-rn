@@ -63,7 +63,7 @@ const MainStack = TabNavigator(
     tabBarPosition: 'bottom',
     tabBarOptions: {
       activeTintColor: '#235C87',
-      inactiveTintColor: '#bdbdbd',
+      inactiveTintColor: '#8a8a8a',
     },
     animationEnabled: false,
     swipeEnabled: false,
