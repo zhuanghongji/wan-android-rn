@@ -4,12 +4,17 @@ import {
   View,
   Text,
   Button,
+  Image,
   FlatList,
   ActivityIndicator,
 } from 'react-native'
 
 import Swiper from 'react-native-swiper'
 import HttpManager from '../../../http/HttpManager'
+
+let Dimensions = require('Dimensions')
+let ScreenWidth = Dimensions.get('window').width
+let ScreenHeight = Dimensions.get('window').height
 
 export default class ArticleScreen extends Component {
   static navigationOptions = {
@@ -41,21 +46,30 @@ export default class ArticleScreen extends Component {
     })
   }
 
+  renderAllBannerItem() {
+    let items = this.state.banner
+    let views = []
+    for (let i = 0; i < items.length; i++) {
+      let item = items[i]
+      views.push(
+        <View style={styles.swiperSlide}>
+          <Image style={styles.swipeImage} source={{ uri: item.imagePath }} />
+        </View>
+      )
+    }
+    return views
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.swiperWrapper}>
           <Swiper style={styles.swiper} autoplay={true}>
-            <View style={styles.slide}>
-              <Text style={styles.text}>Hello Swiper</Text>
-            </View>
-            <View style={styles.slide}>
-              <Text style={styles.text}>Hello World</Text>
-            </View>
+            { this.renderAllBannerItem() }
           </Swiper>
         </View>
 
-        <Text style={styles.flatList}>{JSON.stringify(this.state.banner)}</Text>
+        {/* <Text style={styles.flatList}>{JSON.stringify(this.state.banner)}</Text> */}
         {/* <FlatList style={styles.flatList}/> */}
       </View>
     )
@@ -70,13 +84,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   swiperWrapper: { 
-    height: 200,
+    height: 180,
   },
-  slide: {
+  swiperSlide: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#9DD6EB',
+  },
+  swipeImage: {
+    width: ScreenWidth,
+    height: 180,
   },
   flatList: {
     flex: 1
