@@ -6,6 +6,7 @@ import {
   Button,
   Image,
   FlatList,
+  RefreshControl,
   ActivityIndicator,
 } from 'react-native'
 
@@ -24,29 +25,79 @@ export default class ArticleScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLoading: true,
       banner: [],
+      isLoadingArticles: false,
+      pageNumber: 0,
+      articles: [],
     }
   }
 
   componentDidMount() {
-    this.getHomeBanner()
+    this.loadBannerJson()
+    this.loadArticles()
   }
 
-  getHomeBanner() {
+  /**
+   * 加载首页 Banner 数据
+   */
+  loadBannerJson() {
     return HttpManager.get('/banner/json')
       .then(res => {
-        console.log('getHomeBanner success')
+        console.log('loadBannerJson success')
         this.setState({
           banner: res.data,
         })
       })
       .catch(err => { 
-        console.log('getHomeBanner error')
+        console.log('loadBannerJson error')
     })
   }
 
-  renderAllBannerItem() {
+  /**
+   * 加载首页文章列表
+   */
+  loadArticles() {
+    this.setState({
+      isLoadingArticles: true
+    })
+    return HttpManager.get(`/article/list/${this.state.pageNumber}/json`)
+      .then(res => {
+        console.log('loadArticles success')
+        this.setState({
+          isLoadingArticles: false,
+          articles: [...this.state.articles, ...res.data.datas],
+        })
+      })
+      .catch(err => { 
+        console.log('loadArticles error')
+    })
+  }
+
+  /**
+   * 刷新文章列表
+   */
+  refreshArticles() {
+    this.setState({
+      pageNumber: 0,
+      articles: [],
+    })
+    this.loadArticles()
+  }
+
+  /**
+   * 加载更多首页文章列表
+   */
+  loadMoreArticles() {
+    this.setState({
+      pageNumber: this.state.pageNumber + 1,
+    })
+    this.loadArticles()
+  }
+
+  /**
+   * 绘制 Banner Item 视图
+   */
+  renderBannerItemViews() {
     let items = this.state.banner
     let views = []
     for (let i = 0; i < items.length; i++) {
@@ -60,17 +111,52 @@ export default class ArticleScreen extends Component {
     return views
   }
 
+  /**
+   * 绘制文章列表项的视图
+   * @param {*} item 文章
+   */
+  renderFlatListItems(item) {
+    return (
+      <Text>{item.title}</Text>
+    )
+  }
+
+  /**
+   * 绘制 FlatList 上拉加载更多视图
+   */
+  renderLoadingView() {
+    return (
+      <View>
+        <ActivityIndicator size={'small'} animating={true} />
+      </View>
+    )
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.swiperWrapper}>
           <Swiper style={styles.swiper} autoplay={true}>
-            { this.renderAllBannerItem() }
+            { this.renderBannerItemViews() }
           </Swiper>
         </View>
 
-        {/* <Text style={styles.flatList}>{JSON.stringify(this.state.banner)}</Text> */}
-        {/* <FlatList style={styles.flatList}/> */}
+        <FlatList 
+          style={styles.flatList}
+          data={this.state.articles}
+          renderItem={({ item }) => this.renderFlatListItems(item)}
+          ListFooterComponent={() => this.renderLoadingView()}
+          onEndReached={() => this.loadMoreArticles()}
+          onEndReachedThreshold={1}
+          refreshControl={
+            <RefreshControl
+              title={'正在加载..'}
+              colors={['blue']}
+              refreshing={this.state.isLoadingArticles}
+              onRefresh={() => this.refreshArticles()}
+            />
+          }
+        />
       </View>
     )
   }
