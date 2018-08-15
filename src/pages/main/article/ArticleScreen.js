@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {
   StyleSheet,
+  Dimensions,
   View,
   Text,
   Button,
@@ -10,13 +11,11 @@ import {
   ActivityIndicator,
 } from 'react-native'
 
-import Swiper from 'react-native-swiper'
 import HttpManager from '../../../http/HttpManager'
+import ArticleBannerView from './ArticleBannerView'
 import ArticleItemView from './ArticleItemView'
 
-let Dimensions = require('Dimensions')
-let ScreenWidth = Dimensions.get('window').width
-let ScreenHeight = Dimensions.get('window').height
+let screenWidth = Dimensions.get('window').width
 
 export default class ArticleScreen extends Component {
   static navigationOptions = {
@@ -26,7 +25,6 @@ export default class ArticleScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      banner: [],
       isLoadingArticles: false,
       pageNumber: 0,
       articles: [],
@@ -34,7 +32,6 @@ export default class ArticleScreen extends Component {
   }
 
   componentDidMount() {
-    this.loadBannerJson()
     this.loadArticles()
   }
 
@@ -44,22 +41,6 @@ export default class ArticleScreen extends Component {
    */
   onArticleItemPress(article) {
     alert(article.title)
-  }
-
-  /**
-   * 加载首页 Banner 数据
-   */
-  loadBannerJson() {
-    return HttpManager.get('/banner/json')
-      .then(res => {
-        console.log('loadBannerJson success')
-        this.setState({
-          banner: res.data,
-        })
-      })
-      .catch(err => { 
-        console.log('loadBannerJson error')
-    })
   }
 
   /**
@@ -104,23 +85,6 @@ export default class ArticleScreen extends Component {
   }
 
   /**
-   * 绘制 Banner Item 视图
-   */
-  renderBannerItemViews() {
-    let items = this.state.banner
-    let views = []
-    for (let i = 0; i < items.length; i++) {
-      let item = items[i]
-      views.push(
-        <View style={styles.swiperSlide}>
-          <Image style={styles.swipeImage} source={{ uri: item.imagePath }} />
-        </View>
-      )
-    }
-    return views
-  }
-
-  /**
    * 绘制文章列表项的视图
    * @param {*} item 文章
    */
@@ -144,15 +108,10 @@ export default class ArticleScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.swiperWrapper}>
-          <Swiper style={styles.swiper} autoplay={true}>
-            { this.renderBannerItemViews() }
-          </Swiper>
-        </View>
-
         <FlatList 
           style={styles.flatList}
           data={this.state.articles}
+          ListHeaderComponent={() => <ArticleBannerView />}
           renderItem={({ item }) => (
             <ArticleItemView 
               articleItem={item} 
@@ -182,19 +141,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     backgroundColor: '#EFEFEF',
-  },
-  swiperWrapper: { 
-    height: 180,
-  },
-  swiperSlide: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#9DD6EB',
-  },
-  swipeImage: {
-    width: ScreenWidth,
-    height: 180,
   },
   flatList: {
     flex: 1
