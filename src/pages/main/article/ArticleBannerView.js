@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
   View,
   Image,
 } from 'react-native'
@@ -38,6 +39,10 @@ export default class ArticleItemView extends Component {
     })
   }
 
+  onItemPress(item) {
+    this.props.onItemPress(item)
+  }
+
    /**
    * 绘制 Banner Item 视图
    */
@@ -47,9 +52,11 @@ export default class ArticleItemView extends Component {
     for (let i = 0; i < items.length; i++) {
       let item = items[i]
       views.push(
-        <View style={styles.swiperSlide}>
-          <Image style={styles.swipeImage} source={{ uri: item.imagePath }} />
-        </View>
+        <TouchableOpacity key={item.imagePath} onPress={() => this.onItemPress(item)}>
+          <View style={styles.swiperSlide}>
+            <Image style={styles.swipeImage} source={{ uri: item.imagePath }} />
+          </View>
+        </TouchableOpacity>
       )
     }
     return views
@@ -58,7 +65,12 @@ export default class ArticleItemView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Swiper style={styles.swiper} autoplay={true}>
+        <Swiper 
+          style={styles.swiper} 
+          autoplay={true}
+          dotStyle={{ marginBottom: -24 }}
+          activeDotStyle={{ marginBottom: -24 }}
+        >
           { this.renderBannerItemViews() }
         </Swiper>
       </View>
@@ -76,13 +88,14 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   swiperSlide: {
-    flex: 1,
+    width: screenWidth - 24,
+    height: 180,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#9DD6EB',
   },
   swipeImage: {
-    width: screenWidth,
+    width: screenWidth - 24,
     height: 180,
   },
 })

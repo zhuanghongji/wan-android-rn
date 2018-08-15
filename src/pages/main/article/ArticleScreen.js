@@ -36,11 +36,19 @@ export default class ArticleScreen extends Component {
   }
 
   /**
-   * 文章列表项点击事件
+   * 文章列表项点击事件回调方法
    * @param {*} article 文章数据
    */
   onArticleItemPress(article) {
     alert(article.title)
+  }
+
+  /**
+   * 轮播图项点击事件回调方法
+   * @param {*} item 轮播图项数据
+   */
+  onBannerItemPress(item) {
+    alert(item.title)
   }
 
   /**
@@ -111,7 +119,12 @@ export default class ArticleScreen extends Component {
         <FlatList 
           style={styles.flatList}
           data={this.state.articles}
-          ListHeaderComponent={() => <ArticleBannerView />}
+          keyExtractor={(article) => article.link}
+          ListHeaderComponent={() => (
+            <ArticleBannerView 
+              onItemPress={(item) => this.onBannerItemPress(item)}
+            />
+          )}
           renderItem={({ item }) => (
             <ArticleItemView 
               articleItem={item} 
