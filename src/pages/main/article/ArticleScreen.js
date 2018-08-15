@@ -12,6 +12,7 @@ import {
 
 import Swiper from 'react-native-swiper'
 import HttpManager from '../../../http/HttpManager'
+import ArticleItemView from './ArticleItemView'
 
 let Dimensions = require('Dimensions')
 let ScreenWidth = Dimensions.get('window').width
@@ -35,6 +36,14 @@ export default class ArticleScreen extends Component {
   componentDidMount() {
     this.loadBannerJson()
     this.loadArticles()
+  }
+
+  /**
+   * 文章列表项点击事件
+   * @param {*} article 文章数据
+   */
+  onArticleItemPress(article) {
+    alert(article.title)
   }
 
   /**
@@ -63,9 +72,10 @@ export default class ArticleScreen extends Component {
     return HttpManager.get(`/article/list/${this.state.pageNumber}/json`)
       .then(res => {
         console.log('loadArticles success')
+        let tempArticles = this.state.pageNumber == 0 ? [] : [...this.state.articles]
         this.setState({
           isLoadingArticles: false,
-          articles: [...this.state.articles, ...res.data.datas],
+          articles: [...tempArticles, ...res.data.datas],
         })
       })
       .catch(err => { 
@@ -79,7 +89,6 @@ export default class ArticleScreen extends Component {
   refreshArticles() {
     this.setState({
       pageNumber: 0,
-      articles: [],
     })
     this.loadArticles()
   }
@@ -144,7 +153,12 @@ export default class ArticleScreen extends Component {
         <FlatList 
           style={styles.flatList}
           data={this.state.articles}
-          renderItem={({ item }) => this.renderFlatListItems(item)}
+          renderItem={({ item }) => (
+            <ArticleItemView 
+              articleItem={item} 
+              onItemPress={(article) => this.onArticleItemPress(article)}
+            />
+          )}
           ListFooterComponent={() => this.renderLoadingView()}
           onEndReached={() => this.loadMoreArticles()}
           onEndReachedThreshold={1}
@@ -167,7 +181,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#EFEFEF',
   },
   swiperWrapper: { 
     height: 180,
