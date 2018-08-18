@@ -4,8 +4,6 @@ import {
   Dimensions,
   View,
   Text,
-  Button,
-  Image,
   FlatList,
   RefreshControl,
   ActivityIndicator,
@@ -15,8 +13,9 @@ import HttpManager from '../../../http/HttpManager'
 import ArticleBannerView from './ArticleBannerView'
 import ArticleItemView from './ArticleItemView'
 
-let screenWidth = Dimensions.get('window').width
-
+/**
+ * 首页 - 文章页面
+ */
 export default class ArticleScreen extends Component {
   static navigationOptions = {
     title: '文章',
@@ -40,15 +39,21 @@ export default class ArticleScreen extends Component {
    * @param {*} article 文章数据
    */
   onArticleItemPress(article) {
-    alert(article.title)
+    this.props.navigation.navigate('Web', {
+      title: article.title,
+      url: article.link,
+    })
   }
 
   /**
    * 轮播图项点击事件回调方法
    * @param {*} item 轮播图项数据
    */
-  onBannerItemPress(item) {
-    alert(item.title)
+  onBannerItemPress(bannerItem) {
+    this.props.navigation.navigate('Web', {
+      title: bannerItem.title,
+      url: bannerItem.url,
+    })
   }
 
   /**

@@ -5,7 +5,9 @@ import {
   Text,
 } from 'react-native'
 
-
+/**
+ * 搜索页面
+ */
 export default class ArticleScreen extends Component {
   render() {
     return (

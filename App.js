@@ -19,9 +19,12 @@ import TodoScreen from './src/pages/main/todo/TodoScreen'
 import ExploreScreen from './src/pages/main/explore/ExploreScreen'
 import MineScreen from './src/pages/main/mine/MineScreen'
 
-// 搜索
 import SearchScreen from './src/pages/search/SearchScreen'
+import WebScreen from './src/pages/web/WebScreen'
 
+/**
+ * 首页 Tab 导航器
+ */
 const MainStack = createBottomTabNavigator(
   {
     Article: {
@@ -78,6 +81,14 @@ const RootStack = createStackNavigator(
     },
     Search: {
       screen: SearchScreen,
+    },
+    Web: {
+      screen: WebScreen,
+    }
+  },
+  {
+    navigationOptions: {
+      headerTintColor: 'black',
     }
   }
 )

@@ -5,7 +5,9 @@ import {
   Text,
 } from 'react-native'
 
-
+/**
+ * 首页 - 发现页面
+ */
 export default class ArticleScreen extends Component {
   static navigationOptions = {
     title: '发现',
