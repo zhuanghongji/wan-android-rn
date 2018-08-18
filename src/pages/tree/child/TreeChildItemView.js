@@ -11,7 +11,7 @@ import {
 let screenWidth = Dimensions.get('window').width
 
 /**
- * 组件：体系二级目录标题及其子项
+ * 组件：体系一级列表，标题及其子项
  */
 export default class TreeChildView extends Component {
   constructor(props) {
@@ -32,13 +32,13 @@ export default class TreeChildView extends Component {
    * @param {*} item 
    */
   renderGrandchild(item) {
-    // console.log('renderGrandchild', item.item.name)
+    // console.log('renderGrandchild', item.name)
     return (
       <TouchableOpacity 
         style={styles.grandchildWrapper}
-        onPress={() => this.onGrandchildPress(item.item)}
+        onPress={() => this.onGrandchildPress(item)}
       >
-        <Text style={styles.grandchildName}>{item.item.name}</Text>
+        <Text style={styles.grandchildName}>{item.name}</Text>
       </TouchableOpacity>
     )
   }
@@ -55,7 +55,7 @@ export default class TreeChildView extends Component {
             data={this.props.child.children}
             keyExtractor={(grandchild) => grandchild.name}
             numColumns={3}
-            renderItem={(item) => this.renderGrandchild(item)}
+            renderItem={({ item }) => this.renderGrandchild(item)}
           />
         </View>
     )

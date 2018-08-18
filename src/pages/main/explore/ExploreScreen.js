@@ -38,7 +38,7 @@ export default class ArticleScreen extends Component {
         </View>
 
         <View style={styles.sectionWrapper}>
-          <TouchableOpacity style={styles.itemWrapper} onPress={() => { this.navigate('Tree') }}>
+          <TouchableOpacity style={styles.itemWrapper} onPress={() => { this.navigate('TreeChild') }}>
             <Image style={styles.itemIcon} source={require('./res/ic_tree.png')}/>
             <Text style={styles.itemText}>体系</Text>
             <Image style={styles.itemArrow} source={require('./res/ic_arrow.png')}/>

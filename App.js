@@ -27,7 +27,8 @@ import SearchScreen from './src/pages/search/SearchScreen'
 import WebScreen from './src/pages/web/WebScreen'
 
 import NavigationScreen from './src/pages/navigation/NavigationScreen'
-import TreeScreen from './src/pages/tree/TreeScreen'
+import TreeChildListScreen from './src/pages/tree/child/TreeChildListScreen'
+import TreeGrandchildListScreen from './src/pages/tree/grandchild/TreeGrandchildListScreen'
 import ProjectScreen from './src/pages/project/ProjectScreen'
 import SitesScreen from './src/pages/sites/SitesScreen'
 
@@ -86,7 +87,7 @@ const RootStack = createStackNavigator(
       screen: MainStack,
       navigationOptions: ({ navigation }) => {
         return {
-          title: 'WAN ANDROID',
+          title: 'WAN',
           headerRight: (
             <TouchableOpacity 
               style={{width: 24, height: 24, marginRight: 12, justifyContent: 'center',  }}
@@ -110,8 +111,11 @@ const RootStack = createStackNavigator(
     Navigation: {
       screen: NavigationScreen,
     },
-    Tree: {
-      screen: TreeScreen,
+    TreeChild: {
+      screen: TreeChildListScreen,
+    },
+    TreeGrandchild: {
+      screen: TreeGrandchildListScreen,
     },
     Project: {
       screen: ProjectScreen,

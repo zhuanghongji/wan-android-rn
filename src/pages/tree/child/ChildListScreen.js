@@ -5,8 +5,8 @@ import {
   FlatList,
 } from 'react-native'
 
-import HttpManager from '../../../src/http/HttpManager'
-import TreeChildView from './TreeChildView'
+import HttpManager from '../../../http/HttpManager'
+import TreeChildView from './TreeChildItemView'
 
 /**
  * 页面：体系
