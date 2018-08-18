@@ -7,7 +7,11 @@
  */
 
 import React, { Component } from 'react';
-import { TouchableOpacity, Image, Button, Text } from 'react-native';
+import { 
+  TouchableOpacity, 
+  Image,
+} from 'react-native';
+
 import { 
   createStackNavigator,
   createBottomTabNavigator,
@@ -21,6 +25,11 @@ import MineScreen from './src/pages/main/mine/MineScreen'
 
 import SearchScreen from './src/pages/search/SearchScreen'
 import WebScreen from './src/pages/web/WebScreen'
+
+import NavigationScreen from './src/pages/navigation/NavigationScreen'
+import TreeScreen from './src/pages/tree/TreeScreen'
+import ProjectScreen from './src/pages/project/ProjectScreen'
+import SitesScreen from './src/pages/sites/SitesScreen'
 
 /**
  * 首页 Tab 导航器
@@ -97,6 +106,18 @@ const RootStack = createStackNavigator(
     },
     Web: {
       screen: WebScreen,
+    },
+    Navigation: {
+      screen: NavigationScreen,
+    },
+    Tree: {
+      screen: TreeScreen,
+    },
+    Project: {
+      screen: ProjectScreen,
+    },
+    Sites: {
+      screen: SitesScreen,
     }
   },
   {
