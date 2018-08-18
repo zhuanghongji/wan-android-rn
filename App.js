@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { Image, Button } from 'react-native';
+import { TouchableOpacity, Image, Button, Text } from 'react-native';
 import { 
   createStackNavigator,
   createBottomTabNavigator,
@@ -75,8 +75,21 @@ const RootStack = createStackNavigator(
   {
     Main: {
       screen: MainStack,
-      navigationOptions: {
-        title: 'WAN ANDROID',
+      navigationOptions: ({ navigation }) => {
+        return {
+          title: 'WAN ANDROID',
+          headerRight: (
+            <TouchableOpacity 
+              style={{width: 24, height: 24, marginRight: 12, justifyContent: 'center',  }}
+              onPress={() => {navigation.navigate('Search')}} 
+            >
+              <Image 
+                style={{ width: 16, height: 16 }} 
+                source={require('./src/assets/icon/ic_search.png')} 
+              />
+            </TouchableOpacity>
+          )
+        }
       }
     },
     Search: {
