@@ -11,7 +11,7 @@ import {
 let screenWidth = Dimensions.get('window').width
 
 /**
- * 组件 “搜索输入框”
+ * 组件：搜索输入框
  */
 export default class HotKeyView extends Component {
   constructor(props) {

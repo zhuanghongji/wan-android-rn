@@ -4,14 +4,13 @@ import {
   ScrollView,
   View,
   Text,
-  TextInput,
 } from 'react-native'
 
 import HotKeyView from './HotKeyView'
 import InputView from './InputView'
 
 /**
- * 搜索页面
+ * 页面：搜索
  */
 export default class ArticleScreen extends Component {
   static navigationOptions = {

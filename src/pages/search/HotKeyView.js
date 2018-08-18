@@ -12,6 +12,9 @@ import HttpManager from '../../http/HttpManager'
 
 let screenWidth = Dimensions.get('window').width
 
+/**
+ * 组件：搜索热词
+ */
 export default class HotKeyView extends Component {
   constructor(props) {
     super(props)
