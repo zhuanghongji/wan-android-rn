@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   View,
@@ -9,10 +10,19 @@ import HttpManager from '../../http/HttpManager'
 
 let screenWidth = Dimensions.get('window').width
 
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
+
 /**
  * 首页：导航
  */
-export default class NavigationScreen extends Component {
+export default class NavigationScreen extends Component<Props, State> {
   static navigationOptions = {
     title: '导航',
   }
@@ -60,7 +70,7 @@ export default class NavigationScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'center',

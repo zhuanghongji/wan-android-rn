@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   Dimensions,
@@ -9,10 +10,19 @@ import {
 
 let { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
+
 /**
  * 网页页面
  */
-export default class WebScreen extends Component {
+export default class WebScreen extends Component<Props, State> {
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -36,7 +46,7 @@ export default class WebScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'center',

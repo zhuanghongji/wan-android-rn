@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   View,
@@ -8,10 +9,19 @@ import {
 import HttpManager from '../../../http/HttpManager'
 import TreeChildView from './TreeChildItemView'
 
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
+
 /**
  * 页面：体系
  */
-export default class TreeScreen extends Component {
+export default class TreeScreen extends Component<Props, State> {
   static navigationOptions = {
     title: '体系',
   }
@@ -71,7 +81,7 @@ export default class TreeScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'flex-start',

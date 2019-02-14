@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   Dimensions,
@@ -12,10 +13,19 @@ import HttpManager from '../../http/HttpManager'
 
 let screenWidth = Dimensions.get('window').width
 
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
+
 /**
  * 组件：搜索热词
  */
-export default class HotKeyView extends Component {
+export default class HotKeyView extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -74,7 +84,7 @@ export default class HotKeyView extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     width: screenWidth,
     marginVertical: 12,

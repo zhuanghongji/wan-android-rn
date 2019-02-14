@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   Dimensions,
@@ -10,10 +11,19 @@ import {
 
 let screenWidth = Dimensions.get('window').width
 
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
+
 /**
  * 组件：体系一级列表，标题及其子项
  */
-export default class TreeChildView extends Component {
+export default class TreeChildView extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.child = props.child
@@ -62,7 +72,7 @@ export default class TreeChildView extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     width: screenWidth,
   },

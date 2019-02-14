@@ -504,12 +504,19 @@
   version "15.5.9"
   resolved "http://registry.npm.taobao.org/@types/prop-types/download/@types/prop-types-15.5.9.tgz#f2d14df87b0739041bc53a7d75e3d77d726a3ec0"
 
-"@types/react-native@^0.57.36":
+"@types/react-native@*", "@types/react-native@^0.57.36":
   version "0.57.36"
   resolved "http://registry.npm.taobao.org/@types/react-native/download/@types/react-native-0.57.36.tgz#b8e8c2c119fd0f9227f32ee260b7abf223f47960"
   dependencies:
     "@types/prop-types" "*"
     "@types/react" "*"
+
+"@types/react-navigation@^3.0.2":
+  version "3.0.2"
+  resolved "http://registry.npm.taobao.org/@types/react-navigation/download/@types/react-navigation-3.0.2.tgz#5c1ae0bc6388e4ba67f411d3e02f7d44a8fdfc7d"
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
 
 "@types/react-test-renderer@^16.8.1":
   version "16.8.1"

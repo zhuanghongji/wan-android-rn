@@ -1,22 +1,42 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
   View,
+  ViewStyle,
   Image,
+  ImageStyle,
 } from 'react-native'
+
 import Swiper from 'react-native-swiper'
 import HttpManager from '../../../http/HttpManager'
 
 let screenWidth = Dimensions.get('window').width
 
-export default class ArticleItemView extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      banner: [],
-    }
+interface Props {
+  onItemPress: (item: Item) => void,
+}
+
+interface State {
+  banner: Item[],
+}
+
+interface Styles {
+  container: ViewStyle,
+  swiperSlide: ViewStyle,
+  swipeImage: ImageStyle,
+}
+
+interface Item {
+  imagePath: string,
+}
+
+export default class ArticleItemView extends Component<Props, State> {
+
+  readonly state = {
+    banner: Array<Item>(),
   }
 
   componentDidMount() {
@@ -27,19 +47,17 @@ export default class ArticleItemView extends Component {
    * 加载首页 Banner 数据
    */
   loadBannerJson() {
-    return HttpManager.get('/banner/json')
-      .then(res => {
+    return HttpManager.get('/banner/json').then(res => {
         console.log('loadBannerJson success')
         this.setState({
           banner: res.data,
         })
-      })
-      .catch(err => { 
+      }).catch(err => { 
         console.log('loadBannerJson error')
     })
   }
 
-  onItemPress(item) {
+  onItemPress(item: Item) {
     this.props.onItemPress(item)
   }
 
@@ -66,7 +84,6 @@ export default class ArticleItemView extends Component {
     return (
       <View style={styles.container}>
         <Swiper 
-          style={styles.swiper} 
           autoplay={true}
           dotStyle={{ marginBottom: -24 }}
           activeDotStyle={{ marginBottom: -24 }}
@@ -78,7 +95,7 @@ export default class ArticleItemView extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     width: screenWidth,
     height: 180,

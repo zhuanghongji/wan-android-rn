@@ -1,17 +1,27 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   View,
   FlatList,
 } from 'react-native'
 
-import HttpManager from '../../../../src/http/HttpManager'
+import HttpManager from '../../../http/HttpManager'
 import TreeChildItemView from './TreeChildItemView'
+
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
 
 /**
  * 页面：体系一级列表
  */
-export default class TreeChildScreen extends Component {
+export default class TreeChildScreen extends Component<Props, State> {
   static navigationOptions = {
     title: '体系',
   }
@@ -74,7 +84,7 @@ export default class TreeChildScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'flex-start',

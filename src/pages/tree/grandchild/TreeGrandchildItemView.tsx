@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   Dimensions,
@@ -10,7 +11,19 @@ import {
 
 let screenWidth = Dimensions.get('window').width
 
-export default class ArticleItemView extends Component {
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
+
+/**
+ * 组件：体系二级列表，列表项
+ */
+export default class TreeGrandchildItemView extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.articleItem = props.articleItem
@@ -20,11 +33,14 @@ export default class ArticleItemView extends Component {
     this.props.onItemPress(this.articleItem)
   }
 
+  
+
   render() {
     let icHead = require('../../../assets/icon/ic_man.png')
     let icLike = this.articleItem.collect 
       ? require('../../../assets/icon/ic_like_true.png') 
       : require('../../../assets/icon/ic_like_false.png')
+
     return (
       <TouchableOpacity onPress={() => this.onItemPress()}>
         <View style={styles.container}>
@@ -50,7 +66,7 @@ export default class ArticleItemView extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     width: screenWidth - 24,
     backgroundColor: 'white',

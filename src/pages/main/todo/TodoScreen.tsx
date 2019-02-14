@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   View,
@@ -7,10 +8,19 @@ import {
 
 // import { Hello } from '../../../components/Hello'
 
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
+
 /**
  * 首页 - 待办页面
  */
-export default class ArticleScreen extends Component {
+export default class ArticleScreen extends Component<Props, State> {
   static navigationOptions = {
     title: '待办',
   }
@@ -25,7 +35,7 @@ export default class ArticleScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'center',

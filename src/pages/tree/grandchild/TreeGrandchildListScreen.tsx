@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   View,
@@ -7,13 +8,22 @@ import {
   ActivityIndicator,
 } from 'react-native'
 
-import HttpManager from '../../../../src/http/HttpManager'
+import HttpManager from '../../../http/HttpManager'
 import TreeGrandchildItemView from './TreeGrandchildItemView'
+
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
 
 /**
  * 页面：体系二级列表
  */
-export default class TreeGrandchildListScreen extends Component {
+export default class TreeGrandchildListScreen extends Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     // console.log('zhuanghj', navigation.getParam('cid', ''))
     return {
@@ -130,7 +140,7 @@ export default class TreeGrandchildListScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'flex-start',

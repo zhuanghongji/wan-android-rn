@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   ScrollView,
@@ -9,10 +10,19 @@ import {
 import HotKeyView from './HotKeyView'
 import InputView from './InputView'
 
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
+
 /**
  * 页面：搜索
  */
-export default class ArticleScreen extends Component {
+export default class ArticleScreen extends Component<Props, State> {
   static navigationOptions = {
     title: '搜索'
   }
@@ -37,7 +47,7 @@ export default class ArticleScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'flex-start',

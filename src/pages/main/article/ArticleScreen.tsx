@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import { Component } from 'react'
 import {
   StyleSheet,
   Dimensions,
@@ -13,10 +14,19 @@ import HttpManager from '../../../http/HttpManager'
 import ArticleBannerView from './ArticleBannerView'
 import ArticleItemView from './ArticleItemView'
 
+interface Props {
+}
+
+interface State {
+}
+
+interface Styles {
+}
+
 /**
  * 首页 - 文章页面
  */
-export default class ArticleScreen extends Component {
+export default class ArticleScreen extends Component<Props, State> {
   static navigationOptions = {
     title: '文章',
   }
@@ -153,7 +163,7 @@ export default class ArticleScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
