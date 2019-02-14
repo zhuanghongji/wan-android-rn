@@ -4,8 +4,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  ViewStyle,
   Text,
+  TextStyle,
   Image,
+  ImageStyle,
 } from 'react-native'
 
 
@@ -15,43 +18,59 @@ import {
 } from '../../../res'
 
 interface Props {
+  articleItem: ArticleItem,
+  onItemPress: (_: ArticleItem) => void,
 }
 
 interface State {
 }
 
 interface Styles {
+  container: ViewStyle,
+  rowTop: ViewStyle,
+  rowMiddle: ViewStyle,
+  like: ImageStyle,
+  rowBottom: ImageStyle,
+  txtAuthor: TextStyle,
+  txtNiceDate: TextStyle,
+  txtTitle: TextStyle,
+  txtchapterName: TextStyle,
+}
+
+interface ArticleItem {
+  collect: boolean,
+  author: string,
+  niceDate: string,
+  title: string,
+  chapterName: string,
 }
 
 export default class ArticleItemView extends Component<Props, State>  {
-  constructor(props) {
-    super(props)
-    this.articleItem = props.articleItem
-  }
 
-  onItemPress() {
-    this.props.onItemPress(this.articleItem)
+  onItemPress(articleItem: ArticleItem) {
+    this.props.onItemPress(articleItem)
   }
 
   render() {
+    const { articleItem } = this.props
     let icHead = images.icMan
-    let icLike = this.articleItem.collect ? images.icLikeTrue : images.icLikeFalse
+    let icLike = articleItem.collect ? images.icLikeTrue : images.icLikeFalse
     return (
-      <TouchableOpacity onPress={() => this.onItemPress()}>
+      <TouchableOpacity onPress={() => this.onItemPress(articleItem)}>
         <View style={styles.container}>
           <View style={styles.rowTop}>
             <Image style={styles.like} source={icHead} ></Image>
-            <Text style={styles.txtAuthor} >{this.articleItem.author}</Text>
+            <Text style={styles.txtAuthor} >{articleItem.author}</Text>
             <View style={{ flex: 1 }}></View>
-            <Text style={styles.txtNiceDate} >{this.articleItem.niceDate}</Text>
+            <Text style={styles.txtNiceDate} >{articleItem.niceDate}</Text>
           </View>
 
           <View style={styles.rowMiddle}>
-            <Text style={styles.txtTitle} >{this.articleItem.title}</Text>
+            <Text style={styles.txtTitle} >{articleItem.title}</Text>
           </View>
 
           <View style={styles.rowBottom}>
-            <Text style={styles.txtchapterName} >{this.articleItem.chapterName}</Text>
+            <Text style={styles.txtchapterName} >{articleItem.chapterName}</Text>
             <View style={{ flex: 1 }}></View>
             <Image style={styles.like} source={icLike} ></Image>
           </View>
@@ -105,10 +124,6 @@ const styles = StyleSheet.create<Styles>({
   txtchapterName: {
     fontSize: 12,
     color: '#235C87'
-  },
-  header: {
-    width: 32,
-    height: 32,
   },
   like: {
     width: 18,

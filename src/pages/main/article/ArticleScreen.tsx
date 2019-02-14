@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Component } from 'react'
 import {
   StyleSheet,
-  Dimensions,
   View,
   Text,
   FlatList,
