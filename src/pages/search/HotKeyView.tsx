@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Component } from 'react'
 import {
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   View,
   Text,
@@ -11,7 +10,9 @@ import {
 
 import HttpManager from '../../http/HttpManager'
 
-let screenWidth = Dimensions.get('window').width
+import {
+  dimensions,
+} from '../../res'
 
 interface Props {
 }
@@ -86,11 +87,11 @@ export default class HotKeyView extends Component<Props, State> {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    width: screenWidth,
+    width: dimensions.screenWidth,
     marginVertical: 12,
   },
   flatList: {
-    width: screenWidth,
+    width: dimensions.screenWidth,
   },
   hotKeyItem: {
     backgroundColor: 'white',

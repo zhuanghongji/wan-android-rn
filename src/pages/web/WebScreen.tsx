@@ -7,8 +7,9 @@ import {
   WebView,
 } from 'react-native'
 
-
-let { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+import {
+  dimensions,
+} from '../../res'
 
 interface Props {
 }
@@ -54,7 +55,7 @@ const styles = StyleSheet.create<Styles>({
     backgroundColor: '#F5FCFF',
   },
   web: {
-    width: screenWidth,
-    height: screenHeight,
+    width: dimensions.screenWidth,
+    height: dimensions.screenHeight,
   }
 });

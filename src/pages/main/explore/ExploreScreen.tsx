@@ -2,14 +2,16 @@ import * as React from 'react'
 import { Component } from 'react'
 import {
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   View,
   Image,
   Text,
 } from 'react-native'
 
-let {width: screenWidth} = Dimensions.get('window')
+import {
+  images,
+  dimensions,
+} from '../../../res'
 
 interface Props {
 }
@@ -41,33 +43,33 @@ export default class ArticleScreen extends Component<Props, State> {
       <View style={styles.container}>
         <View style={styles.sectionWrapper}>
           <TouchableOpacity style={styles.itemWrapper} onPress={() => { this.navigate('Navigation') }}>
-            <Image style={styles.itemIcon} source={require('./res/ic_navigation.png')}/>
+            <Image style={styles.itemIcon} source={images.icNavigation}/>
             <Text style={styles.itemText}>导航</Text>
-            <Image style={styles.itemArrow} source={require('./res/ic_arrow.png')}/>
+            <Image style={styles.itemArrow} source={images.icArrow}/>
           </TouchableOpacity>
         </View>
 
         <View style={styles.sectionWrapper}>
           <TouchableOpacity style={styles.itemWrapper} onPress={() => { this.navigate('TreeChild') }}>
-            <Image style={styles.itemIcon} source={require('./res/ic_tree.png')}/>
+            <Image style={styles.itemIcon} source={images.icTree}/>
             <Text style={styles.itemText}>体系</Text>
-            <Image style={styles.itemArrow} source={require('./res/ic_arrow.png')}/>
+            <Image style={styles.itemArrow} source={images.icArrow}/>
           </TouchableOpacity>
 
           <View style={styles.sectionDivider}/>
 
           <TouchableOpacity style={styles.itemWrapper} onPress={() => { this.navigate('Project') }}>
-            <Image style={styles.itemIcon} source={require('./res/ic_project.png')}/>
+            <Image style={styles.itemIcon} source={images.icProject}/>
             <Text style={styles.itemText}>项目</Text>
-            <Image style={styles.itemArrow} source={require('./res/ic_arrow.png')}/>
+            <Image style={styles.itemArrow} source={images.icArrow}/>
           </TouchableOpacity>
 
           <View style={styles.sectionDivider}/>
 
           <TouchableOpacity style={styles.itemWrapper} onPress={() => { this.navigate('Sites') }}>
-            <Image style={styles.itemIcon} source={require('./res/ic_sites.png')}/>
+            <Image style={styles.itemIcon} source={images.icSites}/>
             <Text style={styles.itemText}>常用网站</Text>
-            <Image style={styles.itemArrow} source={require('./res/ic_arrow.png')}/>
+            <Image style={styles.itemArrow} source={images.icArrow}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -88,14 +90,14 @@ const styles = StyleSheet.create<Styles>({
   }, 
   sectionDivider: {
     marginLeft: 16,
-    width: screenWidth - 16,
+    width: dimensions.screenWidth - 16,
     height: 1,
     backgroundColor: '#EFEFEF',
   }, 
   itemWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: screenWidth,
+    width: dimensions.screenWidth,
     color: 'black',
     paddingHorizontal: 16,
     paddingVertical: 8,

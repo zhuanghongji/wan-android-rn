@@ -2,14 +2,15 @@ import * as React from 'react'
 import { Component } from 'react'
 import {
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   View,
   Text,
   TextInput,
 } from 'react-native'
 
-let screenWidth = Dimensions.get('window').width
+import {
+  dimensions,
+} from '../../res'
 
 interface Props {
 }
@@ -59,7 +60,7 @@ export default class HotKeyView extends Component<Props, State> {
 const styles = StyleSheet.create<Styles>({
   container: {
     flexDirection: 'row',
-    width: screenWidth - 24,
+    width: dimensions.screenWidth - 24,
     height: 32,
     justifyContent: 'space-between',
     alignItems: 'center',

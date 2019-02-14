@@ -9,6 +9,11 @@ import {
   createBottomTabNavigator,
 } from 'react-navigation';
 
+import {
+  colors,
+  images,
+} from '../res'
+
 // 首页
 import ArticleScreen from '../pages/main/article/ArticleScreen'
 import TodoScreen from '../pages/main/todo/TodoScreen'
@@ -48,17 +53,13 @@ const MainStack = createBottomTabNavigator(
         const { routeName } = navigation.state;
         let icon;
         if (routeName === 'Article') {
-          icon = focused ? require('../pages/main/article/res/article_focused.png') 
-            : require('../pages/main/article/res/article_normal.png');
+          icon = focused ? images.articleFocused : images.articleNormal;
         } else if (routeName === 'Todo') {
-          icon = focused ? require('../pages/main/todo/res/todo_focused.png') 
-            : require('../pages/main/todo/res/todo_normal.png');
+          icon = focused ? images.todoFocused : images.todoNormal;
         } else if (routeName === 'Explore') {
-          icon = focused ? require('../pages/main/explore/res/explore_focused.png') 
-            : require('../pages/main/explore/res/explore_normal.png');
+          icon = focused ? images.exploreFocused : images.exploreNormal;
         } else if (routeName === 'Mine') {
-          icon = focused ? require('../pages/main/mine/res/mine_focused.png') 
-            : require('../pages/main/mine/res/mine_normal.png');
+          icon = focused ? images.mineFocused : images.mineNormal; 
         }
         return <Image style={{ width: 24, height: 24 }} source={icon} />
       },
@@ -87,38 +88,24 @@ export default RootStack = createStackNavigator(
             >
               <Image 
                 style={{ width: 16, height: 16 }} 
-                source={require('../assets/icon/ic_search.png')} 
+                source={images.icSearch} 
               />
             </TouchableOpacity>
           )
         }
       }
     },
-    Search: {
-      screen: SearchScreen,
-    },
-    Web: {
-      screen: WebScreen,
-    },
-    Navigation: {
-      screen: NavigationScreen,
-    },
-    TreeChild: {
-      screen: TreeChildListScreen,
-    },
-    TreeGrandchild: {
-      screen: TreeGrandchildListScreen,
-    },
-    Project: {
-      screen: ProjectScreen,
-    },
-    Sites: {
-      screen: SitesScreen,
-    }
+    Search: SearchScreen,
+    Web: WebScreen,
+    Navigation: NavigationScreen,
+    TreeChild: TreeChildListScreen,
+    TreeGrandchild: TreeGrandchildListScreen,
+    Project: ProjectScreen,
+    Sites: SitesScreen,
   },
   {
     navigationOptions: {
-      headerTintColor: 'black',
+      headerTintColor: colors.black,
     }
   }
 )

@@ -2,14 +2,19 @@ import * as React from 'react'
 import { Component } from 'react'
 import {
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   View,
   Text,
   Image,
 } from 'react-native'
 
-let screenWidth = Dimensions.get('window').width
+import {
+  dimensions,
+} from '../../../res'
+
+import {
+  images,
+} from '../../../res'
 
 interface Props {
 }
@@ -36,10 +41,8 @@ export default class TreeGrandchildItemView extends Component<Props, State> {
   
 
   render() {
-    let icHead = require('../../../assets/icon/ic_man.png')
-    let icLike = this.articleItem.collect 
-      ? require('../../../assets/icon/ic_like_true.png') 
-      : require('../../../assets/icon/ic_like_false.png')
+    let icHead = images.icMan
+    let icLike = this.articleItem.collect ? images.icLikeTrue : images.icLikeFalse
 
     return (
       <TouchableOpacity onPress={() => this.onItemPress()}>
@@ -68,7 +71,7 @@ export default class TreeGrandchildItemView extends Component<Props, State> {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    width: screenWidth - 24,
+    width: dimensions.screenWidth - 24,
     backgroundColor: 'white',
     borderRadius: 4,
     marginLeft: 12,

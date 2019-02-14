@@ -3,12 +3,13 @@ import { Component } from 'react'
 import {
   StyleSheet,
   View,
-  Dimensions,
 } from 'react-native'
 
 import HttpManager from '../../http/HttpManager'
 
-let screenWidth = Dimensions.get('window').width
+import {
+ dimensions,
+} from '../../res'
 
 interface Props {
 }
@@ -78,6 +79,6 @@ const styles = StyleSheet.create<Styles>({
     backgroundColor: '#F5FCFF',
   },
   flatList: {
-    width: screenWidth,
+    width: dimensions.screenWidth,
   },
 });

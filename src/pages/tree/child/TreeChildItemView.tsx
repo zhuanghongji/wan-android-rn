@@ -2,14 +2,15 @@ import * as React from 'react'
 import { Component } from 'react'
 import {
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   View,
   Text,
   FlatList,
 } from 'react-native'
 
-let screenWidth = Dimensions.get('window').width
+import {
+  dimensions,
+} from '../../../res'
 
 interface Props {
 }
@@ -74,12 +75,12 @@ export default class TreeChildView extends Component<Props, State> {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    width: screenWidth,
+    width: dimensions.screenWidth,
   },
   childWrapper: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    width: screenWidth,
+    width: dimensions.screenWidth,
     backgroundColor: '#efefef',
     marginTop: 12,
     paddingHorizontal: 16,
@@ -89,7 +90,7 @@ const styles = StyleSheet.create<Styles>({
     color: 'gray',
   },
   flatList: {
-    width: screenWidth,
+    width: dimensions.screenWidth,
     paddingVertical: 8,
     backgroundColor: '#ffffff'
   },

@@ -2,14 +2,15 @@ import * as React from 'react'
 import { Component } from 'react'
 import {
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   View,
   Text,
   FlatList,
 } from 'react-native'
 
-let screenWidth = Dimensions.get('window').width
+import {
+ dimensions,
+} from '../../res'
 
 interface Props {
 }
@@ -65,14 +66,14 @@ export default class NavigationItemView extends Component<Props, State> {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    width: screenWidth,
+    width: dimensions.screenWidth,
     marginVertical: 12,
   },
   navigationItemName: {
     color: '#235C87'
   },
   flatList: {
-    width: screenWidth,
+    width: dimensions.screenWidth,
   },
   navigationArticle: {
     backgroundColor: 'white',

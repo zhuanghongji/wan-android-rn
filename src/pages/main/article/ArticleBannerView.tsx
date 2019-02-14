@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Component } from 'react'
 import {
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   View,
   ViewStyle,
@@ -13,7 +12,10 @@ import {
 import Swiper from 'react-native-swiper'
 import HttpManager from '../../../http/HttpManager'
 
-let screenWidth = Dimensions.get('window').width
+import {
+  dimensions,
+} from '../../../res'
+
 
 interface Props {
   onItemPress: (item: Item) => void,
@@ -97,22 +99,22 @@ export default class ArticleItemView extends Component<Props, State> {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    width: screenWidth,
+    width: dimensions.screenWidth,
     height: 180,
-    borderRadius: 4,
+    borderRadius: dimensions.radiusLittle,
     paddingTop: 8,
     paddingLeft: 12,
     paddingRight: 12,
   },
   swiperSlide: {
-    width: screenWidth - 24,
+    width: dimensions.screenWidth - 24,
     height: 180,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#9DD6EB',
   },
   swipeImage: {
-    width: screenWidth - 24,
+    width: dimensions.screenWidth - 24,
     height: 180,
   },
 })
