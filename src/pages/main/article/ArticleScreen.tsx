@@ -3,7 +3,9 @@ import { Component } from 'react'
 import {
   StyleSheet,
   View,
+  ViewStyle,
   Text,
+  TextStyle,
   FlatList,
   RefreshControl,
   ActivityIndicator,
@@ -17,26 +19,28 @@ interface Props {
 }
 
 interface State {
+  isLoadingArticles: boolean,
+  pageNumber: number,
 }
 
 interface Styles {
+  container: ViewStyle,
+  flatList: ViewStyle,
 }
 
 /**
  * 首页 - 文章页面
  */
 export default class ArticleScreen extends Component<Props, State> {
+
   static navigationOptions = {
     title: '文章',
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      isLoadingArticles: false,
-      pageNumber: 0,
-      articles: [],
-    }
+  readonly state = {
+    isLoadingArticles: false,
+    pageNumber: 0,
+    articles: [],
   }
 
   componentDidMount() {
