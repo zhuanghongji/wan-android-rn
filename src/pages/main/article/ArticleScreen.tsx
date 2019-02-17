@@ -4,57 +4,137 @@ import {
   StyleSheet,
   View,
   ViewStyle,
-  Text,
-  TextStyle,
   FlatList,
-  RefreshControl,
-  ActivityIndicator,
 } from 'react-native'
 
-import HttpManager from '../../../http/HttpManager'
+import {
+  NavigationInjectedProps,
+} from 'react-navigation'
+
 import ArticleBannerView from './ArticleBannerView'
 import ArticleItemView from './ArticleItemView'
 
+import {
+  getBanner,
+  BannerItem,
+
+  getArticleList,
+  ArticleItem,
+} from '../../../apis'
+
+import {
+  CustomRefreshControl,
+  LoadMoreView,
+} from '../../../components'
+
 interface Props {
-}
+} 
 
 interface State {
-  isLoadingArticles: boolean,
-  pageNumber: number,
-}
+  refreshing: boolean,
+  
+  bannerItems: BannerItem[],
 
-interface Styles {
-  container: ViewStyle,
-  flatList: ViewStyle,
+  articlesLoadingType: string,
+  articles: ArticleItem[],
 }
 
 /**
  * 首页 - 文章页面
  */
-export default class ArticleScreen extends Component<Props, State> {
+export default class ArticleScreen extends Component<Props & NavigationInjectedProps, State> {
 
   static navigationOptions = {
     title: '文章',
   }
 
   readonly state = {
-    isLoadingArticles: false,
-    pageNumber: 0,
-    articles: [],
+    refreshing: false,
+
+    bannerItems: Array<BannerItem>(),
+
+    articlesLoadingType: LoadMoreView.Type.NORMAL,
+    articles: Array<ArticleItem>(),
   }
 
+  pageNum = 0
+
   componentDidMount() {
-    this.loadArticles()
+    this.loadBanner()
+    this.loadArticles(true)
+  }
+
+  /**
+   * 加载首页 Banner 数据
+   */
+  loadBanner() {
+    getBanner().then(banner => {
+      this.setState({
+        bannerItems: [...banner.data]
+      })
+    })
+  }
+
+  /**
+   * 加载首页文章列表
+   * 
+   * @param isRefresh true 重新加载；false 加载更多
+   */
+  loadArticles(isRefresh: boolean) {
+    const { refreshing, articlesLoadingType } = this.state
+    if (refreshing || articlesLoadingType == LoadMoreView.Type.LOADING) {
+      console.log('正在加载中，请稍后尝试')
+      return
+    }
+    if (isRefresh) {
+      this.setState({ refreshing: true})
+    } else {
+      this.setState({ articlesLoadingType: LoadMoreView.Type.LOADING})
+    }
+    // 加载第一页或下一页数据
+    let nextPageNum = 0
+    if (!isRefresh && this.pageNum != 0) {
+      nextPageNum = this.pageNum + 1
+    }
+    console.log(`开始加载 nextPageNum = ${nextPageNum} 的数据`)
+    getArticleList(nextPageNum).then(articleList => {
+      this.pageNum = nextPageNum
+      this.setState(prevState => {
+        const tempArticles: ArticleItem[] = []
+        if (!isRefresh) {
+          tempArticles.push(...prevState.articles)
+        }
+        return {
+          refreshing: false,
+          articlesLoadingType: LoadMoreView.Type.NORMAL,
+          articles: [...tempArticles, ...articleList.data.datas],
+        }
+      })
+    }).catch(e => {
+      console.log(e)
+      this.setState({
+        articlesLoadingType: LoadMoreView.Type.ERROR,
+      })
+    })
+  }
+
+  /**
+   * 重新加载 Banner 数据和文章列表
+   */
+  onRefreshBannerAndArticles() {
+    console.log('onRefreshBannerAndArticles')
+    this.loadBanner()
+    this.loadArticles(true)
   }
 
   /**
    * 文章列表项点击事件回调方法
    * @param {*} article 文章数据
    */
-  onArticleItemPress(article) {
+  onArticleItemPress(articleItem: ArticleItem) {
     this.props.navigation.navigate('Web', {
-      title: article.title,
-      url: article.link,
+      title: articleItem.title,
+      url: articleItem.link,
     })
   }
 
@@ -62,108 +142,51 @@ export default class ArticleScreen extends Component<Props, State> {
    * 轮播图项点击事件回调方法
    * @param {*} item 轮播图项数据
    */
-  onBannerItemPress(bannerItem) {
+  onBannerItemPress(bannerItem: BannerItem) {
     this.props.navigation.navigate('Web', {
       title: bannerItem.title,
       url: bannerItem.url,
     })
   }
 
-  /**
-   * 加载首页文章列表
-   */
-  loadArticles() {
-    this.setState({
-      isLoadingArticles: true
-    })
-    return HttpManager.get(`/article/list/${this.state.pageNumber}/json`)
-      .then(res => {
-        console.log('loadArticles success')
-        let tempArticles = this.state.pageNumber == 0 ? [] : [...this.state.articles]
-        this.setState({
-          isLoadingArticles: false,
-          articles: [...tempArticles, ...res.data.datas],
-        })
-      })
-      .catch(err => { 
-        console.log('loadArticles error')
-    })
-  }
-
-  /**
-   * 刷新文章列表
-   */
-  refreshArticles() {
-    this.setState({
-      pageNumber: 0,
-    })
-    this.loadArticles()
-  }
-
-  /**
-   * 加载更多首页文章列表
-   */
-  loadMoreArticles() {
-    this.setState({
-      pageNumber: this.state.pageNumber + 1,
-    })
-    this.loadArticles()
-  }
-
-  /**
-   * 绘制文章列表项的视图
-   * @param {*} item 文章
-   */
-  renderFlatListItems(item) {
-    return (
-      <Text>{item.title}</Text>
-    )
-  }
-
-  /**
-   * 绘制 FlatList 上拉加载更多视图
-   */
-  renderLoadingView() {
-    return (
-      <View>
-        <ActivityIndicator size={'small'} animating={true} />
-      </View>
-    )
-  }
-
   render() {
+    const { refreshing, bannerItems, articlesLoadingType, articles } = this.state
     return (
       <View style={styles.container}>
         <FlatList 
           style={styles.flatList}
-          data={this.state.articles}
-          keyExtractor={(article) => article.link}
+          data={articles}
+          keyExtractor={(article: ArticleItem) => article.link}
           ListHeaderComponent={() => (
             <ArticleBannerView 
+              bannerItems={bannerItems}
               onItemPress={(item) => this.onBannerItemPress(item)}
             />
           )}
           renderItem={({ item }) => (
             <ArticleItemView 
               articleItem={item} 
-              onItemPress={(article) => this.onArticleItemPress(article)}
+              onItemPress={articleItem => this.onArticleItemPress(articleItem)}
             />
           )}
-          ListFooterComponent={() => this.renderLoadingView()}
-          onEndReached={() => this.loadMoreArticles()}
+          ListFooterComponent={ <LoadMoreView type={articlesLoadingType}/> }
           onEndReachedThreshold={1}
-          refreshControl={
-            <RefreshControl
-              title={'正在加载..'}
-              colors={['blue']}
-              refreshing={this.state.isLoadingArticles}
-              onRefresh={() => this.refreshArticles()}
+          onEndReached={() => this.loadArticles(false)}
+          refreshControl={(
+            <CustomRefreshControl 
+              refreshing={refreshing}
+              onRefresh={() => this.onRefreshBannerAndArticles()}
             />
-          }
+          )}
         />
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
+  flatList: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -174,6 +197,6 @@ const styles = StyleSheet.create<Styles>({
     backgroundColor: '#EFEFEF',
   },
   flatList: {
-    flex: 1
+    flex: 1,
   }
 });

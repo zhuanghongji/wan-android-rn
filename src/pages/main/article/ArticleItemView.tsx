@@ -11,18 +11,60 @@ import {
   ImageStyle,
 } from 'react-native'
 
-
 import {
   images,
   dimensions,
 } from '../../../res'
 
+import {
+  ArticleItem,
+} from '../../../apis'
+
 interface Props {
   articleItem: ArticleItem,
-  onItemPress: (_: ArticleItem) => void,
+  onItemPress?: (articleItem: ArticleItem) => void,
 }
 
 interface State {
+}
+
+export default class ArticleItemView extends Component<Props, State>  {
+
+  render() {
+    const { articleItem, onItemPress } = this.props
+    let icHead = images.icMan
+    let icLike = articleItem.collect ? images.icLikeTrue : images.icLikeFalse
+    return (
+      <TouchableOpacity 
+        onPress={() => onItemPress && onItemPress(articleItem)}
+      >
+        <View style={styles.container}>
+          <View style={styles.rowTop}>
+            <Image 
+              style={styles.like} 
+              source={icHead}
+            />
+            <Text style={styles.txtAuthor}>{articleItem.author}</Text>
+            <View style={{ flex: 1 }} />
+            <Text style={styles.txtNiceDate}>{articleItem.niceDate}</Text>
+          </View>
+
+          <View style={styles.rowMiddle}>
+            <Text style={styles.txtTitle}>{articleItem.title}</Text>
+          </View>
+
+          <View style={styles.rowBottom}>
+            <Text style={styles.txtchapterName}>{articleItem.chapterName}</Text>
+            <View style={{ flex: 1 }} />
+            <Image 
+              style={styles.like} 
+              source={icLike} 
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+    )
+  }
 }
 
 interface Styles {
@@ -35,49 +77,6 @@ interface Styles {
   txtNiceDate: TextStyle,
   txtTitle: TextStyle,
   txtchapterName: TextStyle,
-}
-
-interface ArticleItem {
-  collect: boolean,
-  author: string,
-  niceDate: string,
-  title: string,
-  chapterName: string,
-}
-
-export default class ArticleItemView extends Component<Props, State>  {
-
-  onItemPress(articleItem: ArticleItem) {
-    this.props.onItemPress(articleItem)
-  }
-
-  render() {
-    const { articleItem } = this.props
-    let icHead = images.icMan
-    let icLike = articleItem.collect ? images.icLikeTrue : images.icLikeFalse
-    return (
-      <TouchableOpacity onPress={() => this.onItemPress(articleItem)}>
-        <View style={styles.container}>
-          <View style={styles.rowTop}>
-            <Image style={styles.like} source={icHead} ></Image>
-            <Text style={styles.txtAuthor} >{articleItem.author}</Text>
-            <View style={{ flex: 1 }}></View>
-            <Text style={styles.txtNiceDate} >{articleItem.niceDate}</Text>
-          </View>
-
-          <View style={styles.rowMiddle}>
-            <Text style={styles.txtTitle} >{articleItem.title}</Text>
-          </View>
-
-          <View style={styles.rowBottom}>
-            <Text style={styles.txtchapterName} >{articleItem.chapterName}</Text>
-            <View style={{ flex: 1 }}></View>
-            <Image style={styles.like} source={icLike} ></Image>
-          </View>
-        </View>
-      </TouchableOpacity>
-    )
-  }
 }
 
 const styles = StyleSheet.create<Styles>({

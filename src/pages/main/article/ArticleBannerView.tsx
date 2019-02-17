@@ -16,51 +16,40 @@ import {
 import Swiper from 'react-native-swiper'
 
 import {
-  getBanner,
   BannerItem,
 } from '../../../apis/banner'
 
 interface Props {
-  onItemPress: (banner: BannerItem) => void,
+  bannerItems?: BannerItem[],
+  onItemPress?: (banner: BannerItem) => void,
 }
 
 interface State {
-  bannerItems: BannerItem[],
 }
 
 export default class ArticleItemView extends Component<Props, State> {
-
-  readonly state = {
-    bannerItems: Array<BannerItem>(),
-  }
-
-  componentDidMount() {
-    // 加载首页 Banner 数据
-    getBanner().then(banner => {
-      this.setState({
-        bannerItems: [...banner.data]
-      })
-    })
-  }
-
-  onItemPress(item: BannerItem) {
-    this.props.onItemPress(item)
-  }
 
    /**
    * 绘制 Banner Item 视图
    */
   renderBannerItemViews() {
-    const { bannerItems } = this.state
+    const { bannerItems, onItemPress } = this.props
+    if (!bannerItems) {
+      return null
+    }
+
     let itemViews = []
     for (const bannerItem of bannerItems) {
       itemViews.push(
         <TouchableOpacity 
           key={bannerItem.imagePath} 
-          onPress={() => this.onItemPress(bannerItem)}
+          onPress={() => onItemPress && onItemPress(bannerItem)}
         >
           <View style={styles.swiperSlide}>
-            <Image style={styles.swipeImage} source={{ uri: bannerItem.imagePath }} />
+            <Image 
+              style={styles.swipeImage} 
+              source={{ uri: bannerItem.imagePath }} 
+            />
           </View>
         </TouchableOpacity>
       )

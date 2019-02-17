@@ -37,6 +37,21 @@ export interface Responses<T> {
   errorMsg: string;
 }
 
+export { HttpManager } from '../managers/HttpManager'
+
+export {  
+  getBanner,
+  BannerItem,
+} from './banner'
+
+export {  
+  getArticleList,
+  getArticleListByCid,
+  ArticleList,
+  ArticleItem,
+  Tag,
+} from './articleList'
+
 
 
 

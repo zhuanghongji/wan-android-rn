@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Response, HttpManager } from '../index'
 
 /**
  * 首页文章列表
@@ -15,10 +15,11 @@ import { Response, Responses } from '../index'
  * "superChapterId": 153,   
  * "superChapterName": "framework", // 一级分类的名称
  *   
- * superChapterId 其实不是一级分类id，因为要拼接跳转url，内容实际都挂在二级分类下，所以该id实际上是一级分类的第一个子类目的id，拼接后故可正常跳转。  
+ * superChapterId 其实不是一级分类id，因为要拼接跳转url，内容实际都挂在二级分类下，
+ * 所以该id实际上是一级分类的第一个子类目的id，拼接后故可正常跳转。  
  */
-export function getArticleList(pageNum: number): Response<ArticleList> {
-  return {} as Response<ArticleList>;
+export function getArticleList(pageNum: number): Promise<Response<ArticleList>> {
+  return HttpManager.get<Response<ArticleList>>(`/article/list/${pageNum}/json`);
 }
 
 /**
@@ -35,10 +36,12 @@ export function getArticleListByCid(pageNum: number, cid: number): Response<Arti
   return {} as Response<ArticleList>;
 }
 
-
-interface ArticleList {
+/**
+ * 文章列表
+ */
+export interface ArticleList {
   curPage: number;
-  datas: Data[];
+  datas: ArticleItem[];
   offset: number;
   over: boolean;
   pageCount: number;
@@ -46,7 +49,10 @@ interface ArticleList {
   total: number;
 }
 
-interface Data {
+/**
+ * 文章项
+ */
+export interface ArticleItem {
   apkLink: string;
   author: string;
   chapterId: number;
@@ -72,7 +78,10 @@ interface Data {
   zan: number;
 }
 
-interface Tag {
+/**
+ * 标签
+ */
+export interface Tag {
   name: string;
   url: string;
 }

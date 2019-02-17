@@ -8,7 +8,7 @@ export const fontSizes = {
   little: 12,
   small: 13,
 
-  normal: 14,
+  base: 14,
   
   large: 15,
   great: 16,
