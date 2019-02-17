@@ -52,6 +52,12 @@ export {
   Tag,
 } from './articleList'
 
+export {
+  getNavi,
+  NaviItem,
+  NaviArticle,
+} from './navi'
+
 
 
 

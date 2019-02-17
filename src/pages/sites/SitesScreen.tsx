@@ -6,6 +6,10 @@ import {
   Text,
 } from 'react-native'
 
+import {
+  NavigationInjectedProps,
+} from 'react-navigation'
+
 interface Props {
 }
 

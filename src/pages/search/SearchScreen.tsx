@@ -7,6 +7,10 @@ import {
   Text,
 } from 'react-native'
 
+import {
+  NavigationInjectedProps,
+} from 'react-navigation'
+
 import HotKeyView from './HotKeyView'
 import InputView from './InputView'
 

@@ -8,6 +8,11 @@ import {
 } from 'react-native'
 
 import {
+  NavigationScreenProps,
+  NavigationInjectedProps,
+} from 'react-navigation'
+
+import {
   dimensions,
 } from '../../res'
 
@@ -23,9 +28,9 @@ interface Styles {
 /**
  * 网页页面
  */
-export default class WebScreen extends Component<Props, State> {
+export default class WebScreen extends Component<Props & NavigationInjectedProps, State> {
 
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions: any = ({ navigation }) => {
     return {
       title: navigation.getParam('title', ''),
       headerBackTitle: '',

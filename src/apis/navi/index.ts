@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Responses, HttpManager } from '../index'
 
 /**
  * 导航数据
@@ -9,17 +9,17 @@ import { Response, Responses } from '../index'
  * 方法：GET  
  * 参数：无
  */
-export function getNavis(): Responses<Navi> {
-  return {} as Responses<Navi>; 
+export function getNavi(): Promise<Responses<NaviItem>> {
+  return HttpManager.get<Responses<NaviItem>>('/navi/json')
 }
 
-interface Navi {
-  articles: Article[];
+export interface NaviItem {
+  articles: NaviArticle[];
   cid: number;
   name: string;
 }
 
-interface Article {
+export interface NaviArticle {
   apkLink: string;
   author: string;
   chapterId: number;

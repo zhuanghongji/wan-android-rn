@@ -8,6 +8,10 @@ import {
   ActivityIndicator,
 } from 'react-native'
 
+import {
+  NavigationInjectedProps,
+} from 'react-navigation'
+
 import HttpManager from '../../../http/HttpManager'
 import TreeGrandchildItemView from './TreeGrandchildItemView'
 

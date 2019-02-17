@@ -4,7 +4,12 @@ import {
   StyleSheet,
   View,
   Text,
+  ViewStyle,
 } from 'react-native'
+
+import {
+  NavigationInjectedProps,
+} from 'react-navigation'
 
 interface Props {
 }
@@ -12,13 +17,10 @@ interface Props {
 interface State {
 }
 
-interface Styles {
-}
-
 /**
  * 首页 - 我的页面
  */
-export default class ArticleScreen extends Component<Props, State> {
+export default class ArticleScreen extends Component<Props & NavigationInjectedProps, State> {
   static navigationOptions = {
     title: '我的',
   }
@@ -30,6 +32,10 @@ export default class ArticleScreen extends Component<Props, State> {
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
