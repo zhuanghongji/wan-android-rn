@@ -9,57 +9,41 @@ import {
   ImageStyle,
 } from 'react-native'
 
-import Swiper from 'react-native-swiper'
-import HttpManager from '../../../http/HttpManager'
-
 import {
   dimensions,
 } from '../../../res'
 
+import Swiper from 'react-native-swiper'
+
+import {
+  getBanner,
+  BannerItem,
+} from '../../../apis/banner'
 
 interface Props {
-  onItemPress: (item: Item) => void,
+  onItemPress: (banner: BannerItem) => void,
 }
 
 interface State {
-  banner: Item[],
-}
-
-interface Styles {
-  container: ViewStyle,
-  swiperSlide: ViewStyle,
-  swipeImage: ImageStyle,
-}
-
-interface Item {
-  imagePath: string,
+  bannerItems: BannerItem[],
 }
 
 export default class ArticleItemView extends Component<Props, State> {
 
   readonly state = {
-    banner: Array<Item>(),
+    bannerItems: Array<BannerItem>(),
   }
 
   componentDidMount() {
-    this.loadBannerJson()
-  }
-
-  /**
-   * 加载首页 Banner 数据
-   */
-  loadBannerJson() {
-    return HttpManager.get('/banner/json').then(res => {
-        console.log('loadBannerJson success')
-        this.setState({
-          banner: res.data,
-        })
-      }).catch(err => { 
-        console.log('loadBannerJson error')
+    // 加载首页 Banner 数据
+    getBanner().then(banner => {
+      this.setState({
+        bannerItems: [...banner.data]
+      })
     })
   }
 
-  onItemPress(item: Item) {
+  onItemPress(item: BannerItem) {
     this.props.onItemPress(item)
   }
 
@@ -67,19 +51,21 @@ export default class ArticleItemView extends Component<Props, State> {
    * 绘制 Banner Item 视图
    */
   renderBannerItemViews() {
-    let items = this.state.banner
-    let views = []
-    for (let i = 0; i < items.length; i++) {
-      let item = items[i]
-      views.push(
-        <TouchableOpacity key={item.imagePath} onPress={() => this.onItemPress(item)}>
+    const { bannerItems } = this.state
+    let itemViews = []
+    for (const bannerItem of bannerItems) {
+      itemViews.push(
+        <TouchableOpacity 
+          key={bannerItem.imagePath} 
+          onPress={() => this.onItemPress(bannerItem)}
+        >
           <View style={styles.swiperSlide}>
-            <Image style={styles.swipeImage} source={{ uri: item.imagePath }} />
+            <Image style={styles.swipeImage} source={{ uri: bannerItem.imagePath }} />
           </View>
         </TouchableOpacity>
       )
     }
-    return views
+    return itemViews
   }
   
   render() {
@@ -95,6 +81,12 @@ export default class ArticleItemView extends Component<Props, State> {
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
+  swiperSlide: ViewStyle,
+  swipeImage: ImageStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
