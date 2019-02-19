@@ -5,11 +5,18 @@ import {
   ScrollView,
   View,
   Text,
+  ViewStyle,
+  TextStyle,
 } from 'react-native'
 
 import {
   NavigationInjectedProps,
 } from 'react-navigation'
+
+import { 
+  getHotkey,
+  Hotkey,
+} from '../../apis'
 
 import HotKeyView from './HotKeyView'
 import InputView from './InputView'
@@ -18,37 +25,61 @@ interface Props {
 }
 
 interface State {
-}
-
-interface Styles {
+  text: string,
+  hotkeys: Hotkey[],
 }
 
 /**
  * 页面：搜索
  */
-export default class ArticleScreen extends Component<Props, State> {
+export default class ArticleScreen extends Component<Props & NavigationInjectedProps, State> {
+
   static navigationOptions = {
-    title: '搜索'
+    title: '搜索',
+  }
+
+  readonly state = {
+    text: '',
+    hotkeys: Array<Hotkey>(),
+  }
+
+  componentDidMount() {
+    getHotkey().then(responses => {
+      this.setState({
+        hotkeys: [...responses.data],
+      })
+    }).catch(err => { 
+      console.log('loadHotKey error', err)
+  })
   }
 
   render() {
+    const { text, hotkeys } = this.state
     return (
       <View style={styles.container}>
         <InputView 
-          onSearchPress={(text) => {
-            alert(text)
+          text={text}
+          onChangeText={text => this.setState({ text })}
+          onSearchPress={text => {
+            console.log(text)
           }}
         />
 
         <Text style={styles.sectionTitle}>搜索热词</Text>
         <HotKeyView 
-          onKeyPress={(item) => {
-            alert(item.name)
+          hotkeys={hotkeys}
+          onHotkeyPress={(item: Hotkey) => {
+            this.setState({ text: item.name })
           }}
         />
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
+  sectionTitle: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

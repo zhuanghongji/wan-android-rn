@@ -6,56 +6,69 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
+  ViewStyle,
 } from 'react-native'
 
 import {
   NavigationInjectedProps,
+  NavigationScreenOptions,
 } from 'react-navigation'
 
-import HttpManager from '../../../http/HttpManager'
+import {
+  ArticleList,
+  ArticleItem,
+  getArticleListByCid,
+} from '../../../apis'
+
 import TreeGrandchildItemView from './TreeGrandchildItemView'
+import {  
+  LoadMoreView,
+  LoadMoreViewType,
+  CustomRefreshControl,
+} from '../../../components'
 
 interface Props {
 }
 
 interface State {
+  refreshing: boolean;
+  articles: ArticleItem[];
+  articlesLoadingType: LoadMoreViewType;
 }
 
-interface Styles {
-}
+type NavigationOptions = (navigation: NavigationInjectedProps ) => NavigationScreenOptions
 
 /**
  * 页面：体系二级列表
  */
-export default class TreeGrandchildListScreen extends Component<Props, State> {
-  static navigationOptions = ({ navigation }) => {
-    // console.log('zhuanghj', navigation.getParam('cid', ''))
+export default class TreeGrandchildListScreen extends Component<Props & NavigationInjectedProps, State> {
+
+  static navigationOptions: NavigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('title', ''),
     }
   }
 
-  constructor(props) {
-    super(props)
-    const { navigation } = props
-    this.cid = navigation.getParam('cid', '')
+  cid = ''
+  pageNum = 0
 
-    this.state = {
-      pageNumber: 0,
-      isLoading: false,
-      treeArticles: [],
-    }
+  readonly state = {
+    refreshing: false,
+    articles: Array<ArticleItem>(),
+    articlesLoadingType: 'normal' as LoadMoreViewType,
   }
 
   componentDidMount() {
-    this.loadTreeArticles()
+    const { navigation } = this.props
+    this.cid = navigation.getParam('cid', '')
+    this.loadTreeArticles(true)
   }
 
   /**
    * 文章列表项点击事件回调方法
    * @param {*} article 文章数据
    */
-  onTreeArticleItemPress(article) {
+  onArticlePress(article: ArticleItem) {
     this.props.navigation.navigate('Web', {
       title: article.title,
       url: article.link,
@@ -65,42 +78,39 @@ export default class TreeGrandchildListScreen extends Component<Props, State> {
   /**
    * 加载 “体系” 数据
    */
-  loadTreeArticles() {
-    this.setState({
-      isLoading: true
-    })
-    return HttpManager.get(`/article/list/${this.state.pageNumber}/json?cid=${this.cid}`)
-      .then(res => {
-        console.log('loadTreeArticles success')
-        let tempArticles = this.state.pageNumber == 0 ? [] : [...this.state.treeArticles]
-        this.setState({
-          isLoadingArticles: false,
-          treeArticles: [...tempArticles, ...res.data.datas],
-        })
+  loadTreeArticles(isRefresh: boolean) {
+    const { refreshing, articlesLoadingType } = this.state
+    if (refreshing || articlesLoadingType == 'loading') {
+      console.log('正在加载中，请稍后尝试')
+      return
+    }
+    if (isRefresh) {
+      this.setState({ refreshing: true})
+    } else {
+      this.setState({ articlesLoadingType: 'loading'})
+    }
+    // 加载第一页或下一页数据
+    let nextPageNum = 0
+    if (!isRefresh && this.pageNum != 0) {
+      nextPageNum = this.pageNum + 1
+    }
+    console.log(`开始加载 nextPageNum = ${nextPageNum} 的数据, cid = ${this.cid}`)
+    getArticleListByCid(nextPageNum, this.cid).then(response => {
+      this.pageNum = nextPageNum
+      this.setState(prevState => {
+        const tempArticles: ArticleItem[] = []
+        if (!isRefresh) {
+          tempArticles.push(...prevState.articles)
+        }
+        return {
+          refreshing: false,
+          articlesLoadingType: 'normal',
+          articles: [...tempArticles, ...response.data.datas],
+        }
       })
-      .catch(err => { 
-        console.log('loadTreeArticles error')
+    }).catch(e => {
+      console.log(e)
     })
-  }
-
-  /**
-   * 刷新文章列表
-   */
-  refreshTreeArticles() {
-    this.setState({
-      pageNumber: 0,
-    })
-    this.loadTreeArticles()
-  }
-
-  /**
-   * 加载更多首页文章列表
-   */
-  loadMoreTreeArticles() {
-    this.setState({
-      pageNumber: this.state.pageNumber + 1,
-    })
-    this.loadTreeArticles()
   }
 
   /**
@@ -115,33 +125,37 @@ export default class TreeGrandchildListScreen extends Component<Props, State> {
   }
 
   render() {
+    const { refreshing, articles, articlesLoadingType } = this.state
     return (
       <View style={styles.container}>
         <FlatList 
           style={styles.flatList}
-          data={this.state.treeArticles}
-          keyExtractor={(article) => article.link}
+          data={articles}
+          keyExtractor={(item) => item.link}
           renderItem={({ item }) => (
             <TreeGrandchildItemView 
-              articleItem={item} 
-              onItemPress={(article) => this.onTreeArticleItemPress(article)}
+              article={item} 
+              onArticlePress={(article) => this.onArticlePress(article)}
             />
           )}
-          ListFooterComponent={() => this.renderLoadingView()}
-          onEndReached={() => this.loadMoreTreeArticles()}
+          ListFooterComponent={ <LoadMoreView type={articlesLoadingType as LoadMoreViewType}/> }
+          onEndReached={() => this.loadTreeArticles(false)}
           onEndReachedThreshold={1}
           refreshControl={
-            <RefreshControl
-              title={'正在加载..'}
-              colors={['blue']}
-              refreshing={this.state.isLoadingArticles}
-              onRefresh={() => this.refreshTreeArticles()}
+            <CustomRefreshControl
+              refreshing={refreshing}
+              onRefresh={() => this.loadTreeArticles(true)}
             />
           }
         />
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
+  flatList: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

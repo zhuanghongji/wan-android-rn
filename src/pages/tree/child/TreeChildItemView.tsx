@@ -6,71 +6,75 @@ import {
   View,
   Text,
   FlatList,
+  ViewStyle,
+  TextStyle,
 } from 'react-native'
 
 import {
   dimensions,
 } from '../../../res'
 
+import {
+  Tree,
+  Children,
+} from '../../../apis'
+
 interface Props {
+  tree: Tree,
+  onChildrenPress: (children: Children) => void,
 }
 
 interface State {
-}
-
-interface Styles {
 }
 
 /**
  * 组件：体系一级列表，标题及其子项
  */
 export default class TreeChildView extends Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.child = props.child
-  }
-
-  /**
-   * 点击 “绘制二级目录下的项” 的回调
-   * @param {*} grandchild 
-   */
-  onGrandchildPress(grandchild) {
-    this.props.onGrandchildPress(grandchild)
-  }
 
   /**
    * 绘制二级目录下的项
    * @param {*} item 
    */
-  renderGrandchild(item) {
-    // console.log('renderGrandchild', item.name)
+  renderChildren(children: Children) {
+    const { onChildrenPress } = this.props
     return (
       <TouchableOpacity 
         style={styles.grandchildWrapper}
-        onPress={() => this.onGrandchildPress(item)}
+        onPress={() => onChildrenPress(children)}
       >
-        <Text style={styles.grandchildName}>{item.name}</Text>
+        <Text style={styles.grandchildName}>{children.name}</Text>
       </TouchableOpacity>
     )
   }
 
   render() {
+    const { tree } = this.props
     return (
         <View style={styles.container}>
           <View style={styles.childWrapper}>
-            <Text style={styles.childName}>{this.child.name}</Text>
+            <Text style={styles.childName}>{tree.name}</Text>
           </View>
 
           <FlatList
             style={styles.flatList}
-            data={this.props.child.children}
-            keyExtractor={(grandchild) => grandchild.name}
+            data={tree.children}
+            keyExtractor={(item) => item.name}
             numColumns={3}
-            renderItem={({ item }) => this.renderGrandchild(item)}
+            renderItem={({ item }) => this.renderChildren(item)}
           />
         </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
+  childWrapper: ViewStyle,
+  childName: TextStyle,
+  flatList: ViewStyle,
+  grandchildWrapper: ViewStyle,
+  grandchildName: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

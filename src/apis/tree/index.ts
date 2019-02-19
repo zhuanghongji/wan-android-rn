@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Responses, HttpManager, ArticleItem } from '../index'
 
 /**
  * 体系数据，主要标识的网站内容的体系结构，二级目录。
@@ -9,12 +9,12 @@ import { Response, Responses } from '../index'
  * 方法：GET
  * 参数：无
  */
-export function getTrees(): Responses<Tree> {
-  return {} as Responses<Tree>;
+export function getTree(): Promise<Responses<Tree>> {
+  return HttpManager.get('/tree/json');
 }
 
-interface Tree {
-  children: Child[];
+export interface Tree {
+  children: Children[];
   courseId: number;
   id: number;
   name: string;
@@ -24,8 +24,8 @@ interface Tree {
   visible: number;
 }
 
-interface Child {
-  children: any[];
+export interface Children {
+  children: ArticleItem[];
   courseId: number;
   id: number;
   name: string;

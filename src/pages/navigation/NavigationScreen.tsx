@@ -89,7 +89,7 @@ export default class NavigationScreen extends Component<Props & NavigationInject
         <FlatList 
           style={styles.naviItemList}
           data={naviItem.articles}
-          numColumns={3}
+          numColumns={2}
           renderItem={({ item }) => (
             this.renderNaviItemArticle(item)
           )}
@@ -129,6 +129,7 @@ const styles = StyleSheet.create<Styles>({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
   },
   flatList: {
     width: dimensions.screenWidth,
@@ -150,7 +151,10 @@ const styles = StyleSheet.create<Styles>({
     width: dimensions.screenWidth,
   },
   naviItemArticle: {
+    flex: 1,
     color: 'blue',
     margin: 8,
+    textAlign: 'center',
+    textAlignVertical: 'center',
   }, 
 });

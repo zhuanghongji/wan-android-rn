@@ -6,60 +6,54 @@ import {
   View,
   Text,
   Image,
+  ViewStyle,
+  TextStyle,
+  ImageStyle,
 } from 'react-native'
 
 import {
   dimensions,
-} from '../../../res'
-
-import {
   images,
 } from '../../../res'
 
+import {
+  ArticleItem,
+} from '../../../apis'
+
 interface Props {
+  article :ArticleItem,
+  onArticlePress: (article :ArticleItem) => void,
 }
 
 interface State {
-}
-
-interface Styles {
 }
 
 /**
  * 组件：体系二级列表，列表项
  */
 export default class TreeGrandchildItemView extends Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.articleItem = props.articleItem
-  }
-
-  onItemPress() {
-    this.props.onItemPress(this.articleItem)
-  }
-
-  
 
   render() {
+    const { article, onArticlePress } = this.props
     let icHead = images.icMan
-    let icLike = this.articleItem.collect ? images.icLikeTrue : images.icLikeFalse
+    let icLike = article.collect ? images.icLikeTrue : images.icLikeFalse
 
     return (
-      <TouchableOpacity onPress={() => this.onItemPress()}>
+      <TouchableOpacity onPress={() => onArticlePress(article)}>
         <View style={styles.container}>
           <View style={styles.rowTop}>
             <Image style={styles.like} source={icHead} ></Image>
-            <Text style={styles.txtAuthor} >{this.articleItem.author}</Text>
+            <Text style={styles.txtAuthor} >{article.author}</Text>
             <View style={{ flex: 1 }}></View>
-            <Text style={styles.txtNiceDate} >{this.articleItem.niceDate}</Text>
+            <Text style={styles.txtNiceDate} >{article.niceDate}</Text>
           </View>
 
           <View style={styles.rowMiddle}>
-            <Text style={styles.txtTitle} >{this.articleItem.title}</Text>
+            <Text style={styles.txtTitle} >{article.title}</Text>
           </View>
 
           <View style={styles.rowBottom}>
-            <Text style={styles.txtchapterName} >{this.articleItem.chapterName}</Text>
+            <Text style={styles.txtchapterName} >{article.chapterName}</Text>
             <View style={{ flex: 1 }}></View>
             <Image style={styles.like} source={icLike} ></Image>
           </View>
@@ -67,6 +61,19 @@ export default class TreeGrandchildItemView extends Component<Props, State> {
       </TouchableOpacity>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
+  rowTop: ViewStyle,
+  rowMiddle: ViewStyle,
+  rowBottom: ViewStyle,
+  txtAuthor: TextStyle,
+  txtNiceDate: TextStyle,
+  txtTitle: TextStyle,
+  txtchapterName: TextStyle,
+  header: ViewStyle,
+  like: ImageStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

@@ -4,11 +4,14 @@ import {
   StyleSheet,
   View,
   Text,
+  ViewStyle,
 } from 'react-native'
 
 import {
   NavigationInjectedProps,
 } from 'react-navigation'
+
+import { Hotkey } from '../../apis'
 
 interface Props {
 }
@@ -16,13 +19,10 @@ interface Props {
 interface State {
 }
 
-interface Styles {
-}
-
 /**
  * 首页：项目
  */
-export default class ProjectScreen extends Component<Props, State> {
+export default class ProjectScreen extends Component<Props & NavigationInjectedProps, State> {
   static navigationOptions = {
     title: '项目',
   }
@@ -34,6 +34,10 @@ export default class ProjectScreen extends Component<Props, State> {
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

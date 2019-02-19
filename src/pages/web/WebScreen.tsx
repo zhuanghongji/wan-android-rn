@@ -5,11 +5,13 @@ import {
   Dimensions,
   View,
   WebView,
+  ViewStyle,
 } from 'react-native'
 
 import {
-  NavigationScreenProps,
-  NavigationInjectedProps,
+  NavigationInjectedProps, 
+  NavigationScreenOptions,
+  NavigationProp
 } from 'react-navigation'
 
 import {
@@ -22,15 +24,14 @@ interface Props {
 interface State {
 }
 
-interface Styles {
-}
+type NavigationOptions = (navigation: NavigationInjectedProps ) => NavigationScreenOptions
 
 /**
  * 网页页面
  */
 export default class WebScreen extends Component<Props & NavigationInjectedProps, State> {
 
-  static navigationOptions: any = ({ navigation }) => {
+  static navigationOptions: NavigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('title', ''),
       headerBackTitle: '',
@@ -50,6 +51,11 @@ export default class WebScreen extends Component<Props & NavigationInjectedProps
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
+  web: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

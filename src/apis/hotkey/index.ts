@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Responses, HttpManager } from '../index'
 
 /**
  * 搜索热词，即目前搜索最多的关键词。
@@ -9,11 +9,11 @@ import { Response, Responses } from '../index'
  * 方法：GET  
  * 参数：无
  */
-export function getHotkeys(): Responses<Hotkey> {
-  return {} as Responses<Hotkey>;
+export function getHotkey(): Promise<Responses<Hotkey>> {
+  return HttpManager.get('/hotkey/json')
 }
 
-interface Hotkey {
+export interface Hotkey {
   id: number;
   link: string;
   name: string;

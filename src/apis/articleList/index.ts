@@ -32,8 +32,8 @@ export function getArticleList(pageNum: number): Promise<Response<ArticleList>> 
  * - cid 分类的id，上述二级目录的id
  * - 页码：拼接在链接上，从0开始。
  */
-export function getArticleListByCid(pageNum: number, cid: number): Response<ArticleList> {
-  return {} as Response<ArticleList>;
+export function getArticleListByCid(pageNum: number, cid: string): Promise<Response<ArticleList>> {
+  return HttpManager.get(`/article/list/${pageNum}/json?cid=${cid}`)
 }
 
 /**

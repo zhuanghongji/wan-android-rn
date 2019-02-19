@@ -25,6 +25,7 @@ import {
 import {
   CustomRefreshControl,
   LoadMoreView,
+  LoadMoreViewType,
 } from '../../../components'
 
 interface Props {
@@ -35,7 +36,7 @@ interface State {
   
   bannerItems: BannerItem[],
 
-  articlesLoadingType: string,
+  articlesLoadingType: LoadMoreViewType,
   articles: ArticleItem[],
 }
 
@@ -53,7 +54,7 @@ export default class ArticleScreen extends Component<Props & NavigationInjectedP
 
     bannerItems: Array<BannerItem>(),
 
-    articlesLoadingType: LoadMoreView.Type.NORMAL,
+    articlesLoadingType: 'normal' as LoadMoreViewType,
     articles: Array<ArticleItem>(),
   }
 
@@ -82,14 +83,14 @@ export default class ArticleScreen extends Component<Props & NavigationInjectedP
    */
   loadArticles(isRefresh: boolean) {
     const { refreshing, articlesLoadingType } = this.state
-    if (refreshing || articlesLoadingType == LoadMoreView.Type.LOADING) {
+    if (refreshing || articlesLoadingType == 'loading') {
       console.log('正在加载中，请稍后尝试')
       return
     }
     if (isRefresh) {
       this.setState({ refreshing: true})
     } else {
-      this.setState({ articlesLoadingType: LoadMoreView.Type.LOADING})
+      this.setState({ articlesLoadingType: 'loading'})
     }
     // 加载第一页或下一页数据
     let nextPageNum = 0
@@ -106,14 +107,14 @@ export default class ArticleScreen extends Component<Props & NavigationInjectedP
         }
         return {
           refreshing: false,
-          articlesLoadingType: LoadMoreView.Type.NORMAL,
+          articlesLoadingType: 'normal',
           articles: [...tempArticles, ...articleList.data.datas],
         }
       })
     }).catch(e => {
       console.log(e)
       this.setState({
-        articlesLoadingType: LoadMoreView.Type.ERROR,
+        articlesLoadingType: 'error',
       })
     })
   }
@@ -169,7 +170,7 @@ export default class ArticleScreen extends Component<Props & NavigationInjectedP
               onItemPress={articleItem => this.onArticleItemPress(articleItem)}
             />
           )}
-          ListFooterComponent={ <LoadMoreView type={articlesLoadingType}/> }
+          ListFooterComponent={ <LoadMoreView type={articlesLoadingType as LoadMoreViewType}/> }
           onEndReachedThreshold={1}
           onEndReached={() => this.loadArticles(false)}
           refreshControl={(

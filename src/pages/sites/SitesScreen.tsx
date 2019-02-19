@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   Text,
+  ViewStyle,
 } from 'react-native'
 
 import {
@@ -16,13 +17,10 @@ interface Props {
 interface State {
 }
 
-interface Styles {
-}
-
 /**
  * 页面：常用网站
  */
-export default class SitesScreen extends Component<Props, State> {
+export default class SitesScreen extends Component<Props & NavigationInjectedProps, State> {
   static navigationOptions = {
     title: '常用网站',
   }
@@ -34,6 +32,10 @@ export default class SitesScreen extends Component<Props, State> {
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

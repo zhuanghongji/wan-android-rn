@@ -6,6 +6,8 @@ import {
   View,
   Text,
   TextInput,
+  ViewStyle,
+  TextStyle,
 } from 'react-native'
 
 import {
@@ -13,48 +15,46 @@ import {
 } from '../../res'
 
 interface Props {
+  text: string;
+  onChangeText: (text: string) => void;
+  onSearchPress: (text: string) => void;
 }
 
 interface State {
-}
-
-interface Styles {
 }
 
 /**
  * 组件：搜索输入框
  */
 export default class HotKeyView extends Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      text: '',
-    }
-  }
-
-  onSearchPress(text) {
-    this.props.onSearchPress(text)
-  }
   
   render() {
+    const { text, onChangeText, onSearchPress } = this.props
+
     return (
       <View style={styles.container}>
         <TextInput
-          placeholder={'searchInput'}
-          style={styles.textInput}
+          style={styles.searchInput}
           placeholder={'请输入搜索关键字..'}
-          onChangeText={(text) => this.setState({ text })}
-          value={this.state.text}
+          onChangeText={text => onChangeText(text)}
+          value={text}
         />
         <TouchableOpacity 
           style={styles.searchButton}
-          onPress={() => {this.onSearchPress(this.state.text)}}
+          onPress={() => onSearchPress(text)}
         >
-          <Text style={styles.searchButtonText} >搜索</Text>
+          <Text style={styles.searchButtonText}>搜索</Text>
         </TouchableOpacity>
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
+  searchInput: ViewStyle,
+  searchButton: ViewStyle,
+  searchButtonText: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

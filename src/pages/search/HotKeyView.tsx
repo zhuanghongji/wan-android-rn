@@ -6,75 +6,49 @@ import {
   View,
   Text,
   FlatList,
+  ViewStyle,
+  TextStyle,
 } from 'react-native'
-
-import HttpManager from '../../http/HttpManager'
 
 import {
   dimensions,
 } from '../../res'
 
+import { Hotkey } from 'src/apis';
+
 interface Props {
+  hotkeys: Hotkey[];
+  onHotkeyPress: (hotkey: Hotkey) => void;
 }
 
 interface State {
-}
-
-interface Styles {
 }
 
 /**
  * 组件：搜索热词
  */
 export default class HotKeyView extends Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      hotKey: [],
-    }
-  }
 
-  componentDidMount() {
-    this.loadHotKey()
-  }
-
-  /**
-   * 加载 “搜索热词”
-   */
-  loadHotKey() {
-    return HttpManager.get('/hotkey/json')
-      .then(res => {
-        this.setState({
-          hotKey: res.data,
-        })
-      })
-      .catch(err => { 
-        console.log('loadHotKey error')
-    })
-  }
-
-  onKeyPress(item) {
-    this.props.onKeyPress(item)
-  }
-
-  renderHotKeyItem(item) {
+  renderHotKeyItem(hotkey: Hotkey) {
+    const { onHotkeyPress } = this.props
     return (
       <TouchableOpacity 
         style={styles.hotKeyItem}
-        onPress={() => {this.onKeyPress(item)}}
+        onPress={() => onHotkeyPress(hotkey)}
       >
-        <Text style={styles.text} >{item.name}</Text>
+        <Text style={styles.text} >{hotkey.name}</Text>
       </TouchableOpacity>
     )
   }
   
   render() {
+    const { hotkeys } = this.props
     return (
       <View style={styles.container}>
         <FlatList
           style={styles.flatList}
-          data={this.state.hotKey}
-          keyExtractor={(key) => key.name}
+          data={hotkeys}
+          keyExtractor={(item) => item.name}
           numColumns={3}
           renderItem={({ item }) => (
             this.renderHotKeyItem(item)
@@ -83,6 +57,13 @@ export default class HotKeyView extends Component<Props, State> {
       </View>
     )
   }
+}
+
+interface Styles {
+  container: ViewStyle,
+  flatList: ViewStyle,
+  hotKeyItem: ViewStyle,
+  text: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

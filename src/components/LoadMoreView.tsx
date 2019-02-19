@@ -17,8 +17,10 @@ import {
   fontSizes,
 } from '../res'
 
+export type LoadMoreViewType = 'normal' | 'loading' | 'completed' | 'error'
+
 interface Props {
-  type: string,
+  type: LoadMoreViewType,
   onRetry?: () => void,
 }
 
@@ -30,26 +32,27 @@ interface State {
  */
 export class LoadMoreView extends Component<Props, State> {
 
-  static Type = {
-    NORMAL: 'normal',
-    LOADING: 'loading',
-    COMPLETED: 'completed',
-    ERROR: 'error',
-  }
+  // static Type = {
+  //   NORMAL: 'normal',
+  //   LOADING: 'loading',
+  //   COMPLETED: 'completed',
+  //   ERROR: 'error',
+  // }
 
   static defaultProps = {
-    type: LoadMoreView.Type.NORMAL,
+    // type: LoadMoreView.Type.NORMAL,
+    type: 'normal',
   }
 
-  getTypeDesc(type: string) {
+  getTypeDesc(type: LoadMoreViewType) {
     switch(type) {
-      case LoadMoreView.Type.NORMAL: 
+      case 'normal': 
         return "上拉加载更多"
-      case LoadMoreView.Type.LOADING: 
+      case 'loading': 
         return "加载中.."
-      case LoadMoreView.Type.COMPLETED: 
+      case 'completed': 
         return "已全部加载"
-      case LoadMoreView.Type.LOADING: 
+      case 'error': 
         return "加载异常，点击继续加载"
       default: 
         return ""
@@ -61,10 +64,10 @@ export class LoadMoreView extends Component<Props, State> {
     return (
       <TouchableOpacity 
         style={styles.container}
-        disabled={type !== LoadMoreView.Type.ERROR}
+        disabled={type !== 'error'}
       >
         {
-          type === LoadMoreView.Type.LOADING ? (
+          type === 'loading' ? (
             <ActivityIndicator 
               size="small" 
               animating={true} 
