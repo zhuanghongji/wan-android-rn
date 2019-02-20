@@ -10,17 +10,23 @@ import {
 } from 'react-native'
 
 import {
+  NavigationInjectedProps,
+  NavigationScreenProp,
+} from 'react-navigation'
+
+import {
   getNavi,
   NaviItem,
   NaviArticle,
 } from '../../apis'
 
 import {
-  NavigationInjectedProps,
-} from 'react-navigation'
+  gotoWebScreen,
+} from '../../pages'
 
 import {
- dimensions, colors,
+ dimensions, 
+ colors,
 } from '../../res'
 
 interface Props {
@@ -30,10 +36,16 @@ interface State {
   naviItems: NaviItem[],
 }
 
+export const NAVIGATION_SCREEN_NAME = 'NavigationScreen'
+
+export function gotoNavigationScreen(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(NAVIGATION_SCREEN_NAME)
+}
+
 /**
  * 首页 - 发现 - 导航
  */
-export default class NavigationScreen extends Component<Props & NavigationInjectedProps, State> {
+export class NavigationScreen extends Component<Props & NavigationInjectedProps, State> {
 
   static navigationOptions = {
     title: '导航',
@@ -64,10 +76,7 @@ export default class NavigationScreen extends Component<Props & NavigationInject
    * NaviArticle 点击时回调
    */
   onNaviItemArticlePress(naviArticle: NaviArticle) {
-    this.props.navigation.navigate('Web', {
-      title: naviArticle.title,
-      url: naviArticle.link,
-    })
+    gotoWebScreen(this.props.navigation, naviArticle.title, naviArticle.link)
   }
 
   renderNaviItemArticle(article: NaviArticle) {

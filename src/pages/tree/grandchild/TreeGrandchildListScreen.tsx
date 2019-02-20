@@ -12,15 +12,20 @@ import {
 import {
   NavigationInjectedProps,
   NavigationScreenOptions,
+  NavigationScreenProp,
 } from 'react-navigation'
 
 import {
-  ArticleList,
+  gotoWebScreen,
+} from '../../../pages'
+
+import {
   ArticleItem,
   getArticleListByCid,
 } from '../../../apis'
 
 import TreeGrandchildItemView from './TreeGrandchildItemView'
+
 import {  
   LoadMoreView,
   LoadMoreViewType,
@@ -38,14 +43,26 @@ interface State {
 
 type NavigationOptions = (navigation: NavigationInjectedProps ) => NavigationScreenOptions
 
+const PARAM_TITLE = 'title'
+const PARAM_CID = 'cid'
+
+export const TREE_GRANDCHILD_SCREEN_NAME = 'TreeGrandchildListScreen'
+
+export function gotoTreeGrandchildListScreen(navigation: NavigationScreenProp<any>, title: string, cid: number) {
+  navigation.navigate(TREE_GRANDCHILD_SCREEN_NAME, {
+    [PARAM_TITLE]: title,
+    [PARAM_CID]: cid,
+  })
+}
+
 /**
  * 页面：体系二级列表
  */
-export default class TreeGrandchildListScreen extends Component<Props & NavigationInjectedProps, State> {
+export class TreeGrandchildListScreen extends Component<Props & NavigationInjectedProps, State> {
 
   static navigationOptions: NavigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('title', ''),
+      title: navigation.getParam(PARAM_TITLE, ''),
     }
   }
 
@@ -60,7 +77,7 @@ export default class TreeGrandchildListScreen extends Component<Props & Navigati
 
   componentDidMount() {
     const { navigation } = this.props
-    this.cid = navigation.getParam('cid', '')
+    this.cid = navigation.getParam(PARAM_CID, '')
     this.loadTreeArticles(true)
   }
 
@@ -69,10 +86,7 @@ export default class TreeGrandchildListScreen extends Component<Props & Navigati
    * @param {*} article 文章数据
    */
   onArticlePress(article: ArticleItem) {
-    this.props.navigation.navigate('Web', {
-      title: article.title,
-      url: article.link,
-    })
+    gotoWebScreen(this.props.navigation, article.title, article.link)
   }
 
   /**

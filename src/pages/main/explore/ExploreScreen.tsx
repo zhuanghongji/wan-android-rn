@@ -12,13 +12,21 @@ import {
 } from 'react-native'
 
 import {
+  NavigationInjectedProps,
+  NavigationScreenProp,
+} from 'react-navigation'
+
+import {
   images,
   dimensions,
 } from '../../../res'
 
 import {
-  NavigationInjectedProps,
-} from 'react-navigation'
+  gotoNavigationScreen,
+  gotoTreeChildListScreen,
+  gotoProjectScreen,
+  gotoSitesScreen,
+} from '../../index'
 
 interface Props {
 }
@@ -26,29 +34,29 @@ interface Props {
 interface State {
 }
 
+export const EXPLORE_SCREEN_NAME = 'ExploreScreen'
+
+export function gotoExploreScreen(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(EXPLORE_SCREEN_NAME)
+}
+
 /**
  * 首页 - 发现页面
  */
-export default class ArticleScreen extends Component<Props & NavigationInjectedProps, State> {
+export class ExploreScreen extends Component<Props & NavigationInjectedProps, State> {
+
   static navigationOptions = {
     title: '发现',
   }
 
-  /**
-   * 导航到参数对应的页面
-   * @param {*} screen 页面参数
-   */
-  navigate(screen: string) {
-    this.props.navigation.navigate(screen)
-  }
-
   render() {
+    const { navigation } = this.props
     return (
       <View style={styles.container}>
         <View style={styles.sectionWrapper}>
           <TouchableOpacity 
             style={styles.itemWrapper} 
-            onPress={() => { this.navigate('Navigation') }}
+            onPress={() => { gotoNavigationScreen(navigation) }}
           >
             <Image style={styles.itemIcon} source={images.icNavigation}/>
             <Text style={styles.itemText}>导航</Text>
@@ -59,7 +67,7 @@ export default class ArticleScreen extends Component<Props & NavigationInjectedP
         <View style={styles.sectionWrapper}>
           <TouchableOpacity 
             style={styles.itemWrapper} 
-            onPress={() => { this.navigate('TreeChild') }}
+            onPress={() => { gotoTreeChildListScreen(navigation) }}
           >
             <Image style={styles.itemIcon} source={images.icTree}/>
             <Text style={styles.itemText}>体系</Text>
@@ -70,7 +78,7 @@ export default class ArticleScreen extends Component<Props & NavigationInjectedP
 
           <TouchableOpacity 
             style={styles.itemWrapper} 
-            onPress={() => { this.navigate('Project') }}
+            onPress={() => { gotoProjectScreen(navigation) }}
           >
             <Image style={styles.itemIcon} source={images.icProject}/>
             <Text style={styles.itemText}>项目</Text>
@@ -81,7 +89,7 @@ export default class ArticleScreen extends Component<Props & NavigationInjectedP
 
           <TouchableOpacity 
             style={styles.itemWrapper} 
-            onPress={() => { this.navigate('Sites') }}
+            onPress={() => { gotoSitesScreen(navigation) }}
           >
             <Image style={styles.itemIcon} source={images.icSites}/>
             <Text style={styles.itemText}>常用网站</Text>

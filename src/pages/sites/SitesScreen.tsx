@@ -9,6 +9,7 @@ import {
 
 import {
   NavigationInjectedProps,
+  NavigationScreenProp,
 } from 'react-navigation'
 
 interface Props {
@@ -17,10 +18,17 @@ interface Props {
 interface State {
 }
 
+export const SITES_SCREEN_NAME = 'SitesScreen'
+
+export function gotoSitesScreen(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(SITES_SCREEN_NAME)
+}
+
 /**
  * 页面：常用网站
  */
-export default class SitesScreen extends Component<Props & NavigationInjectedProps, State> {
+export class SitesScreen extends Component<Props & NavigationInjectedProps, State> {
+  
   static navigationOptions = {
     title: '常用网站',
   }

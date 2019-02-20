@@ -9,6 +9,7 @@ import {
 
 import {
   NavigationInjectedProps,
+  NavigationScreenProp,
 } from 'react-navigation'
 
 interface Props {
@@ -17,10 +18,16 @@ interface Props {
 interface State {
 }
 
+export const TODO_SCREEN_NAME = 'TodoScreen'
+
+export function gotoTodoScreen(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(TODO_SCREEN_NAME)
+}
+
 /**
  * 首页 - 待办页面
  */
-export default class ArticleScreen extends Component<Props & NavigationInjectedProps, State> {
+export class TodoScreen extends Component<Props & NavigationInjectedProps, State> {
   static navigationOptions = {
     title: '待办',
   }

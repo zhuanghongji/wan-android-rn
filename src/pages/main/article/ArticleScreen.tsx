@@ -9,6 +9,7 @@ import {
 
 import {
   NavigationInjectedProps,
+  NavigationScreenProp,
 } from 'react-navigation'
 
 import ArticleBannerView from './ArticleBannerView'
@@ -17,7 +18,6 @@ import ArticleItemView from './ArticleItemView'
 import {
   getBanner,
   BannerItem,
-
   getArticleList,
   ArticleItem,
 } from '../../../apis'
@@ -27,6 +27,10 @@ import {
   LoadMoreView,
   LoadMoreViewType,
 } from '../../../components'
+
+import {
+  gotoWebScreen,
+} from '../../../pages'
 
 interface Props {
 } 
@@ -40,10 +44,16 @@ interface State {
   articles: ArticleItem[],
 }
 
+export const ARTICLE_SCREEN_NAME = 'ArticleScreen'
+
+export function gotoArticleScreen(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(ARTICLE_SCREEN_NAME)
+}
+
 /**
  * 首页 - 文章页面
  */
-export default class ArticleScreen extends Component<Props & NavigationInjectedProps, State> {
+export class ArticleScreen extends Component<Props & NavigationInjectedProps, State> {
 
   static navigationOptions = {
     title: '文章',
@@ -133,10 +143,7 @@ export default class ArticleScreen extends Component<Props & NavigationInjectedP
    * @param {*} article 文章数据
    */
   onArticleItemPress(articleItem: ArticleItem) {
-    this.props.navigation.navigate('Web', {
-      title: articleItem.title,
-      url: articleItem.link,
-    })
+    gotoWebScreen(this.props.navigation, articleItem.title, articleItem.link)
   }
 
   /**
@@ -144,10 +151,7 @@ export default class ArticleScreen extends Component<Props & NavigationInjectedP
    * @param {*} item 轮播图项数据
    */
   onBannerItemPress(bannerItem: BannerItem) {
-    this.props.navigation.navigate('Web', {
-      title: bannerItem.title,
-      url: bannerItem.url,
-    })
+    gotoWebScreen(this.props.navigation, bannerItem.title, bannerItem.url)
   }
 
   render() {

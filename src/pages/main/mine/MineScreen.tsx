@@ -9,6 +9,7 @@ import {
 
 import {
   NavigationInjectedProps,
+  NavigationScreenProp,
 } from 'react-navigation'
 
 interface Props {
@@ -17,10 +18,17 @@ interface Props {
 interface State {
 }
 
+export const MINE_SCREEN_NAME = 'MineScreen'
+
+export function gotoMineScreen(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(MINE_SCREEN_NAME)
+}
+
 /**
  * 首页 - 我的页面
  */
-export default class ArticleScreen extends Component<Props & NavigationInjectedProps, State> {
+export class MineScreen extends Component<Props & NavigationInjectedProps, State> {
+
   static navigationOptions = {
     title: '我的',
   }

@@ -11,6 +11,7 @@ import {
 
 import {
   NavigationInjectedProps,
+  NavigationScreenProp,
 } from 'react-navigation'
 
 import { 
@@ -29,10 +30,16 @@ interface State {
   hotkeys: Hotkey[],
 }
 
+export const SEARCH_SCREEN_NAME = 'SearchScreen'
+
+export function gotoSearchScreen(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(SEARCH_SCREEN_NAME)
+}
+
 /**
  * 页面：搜索
  */
-export default class ArticleScreen extends Component<Props & NavigationInjectedProps, State> {
+export class SearchScreen extends Component<Props & NavigationInjectedProps, State> {
 
   static navigationOptions = {
     title: '搜索',

@@ -9,6 +9,7 @@ import {
 
 import {
   NavigationInjectedProps,
+  NavigationScreenProp,
 } from 'react-navigation'
 
 import {
@@ -17,7 +18,10 @@ import {
   Children,
 } from '../../../apis'
 
-import HttpManager from '../../../http/HttpManager'
+import {
+  gotoTreeGrandchildListScreen,
+} from '../../index'
+
 import TreeChildItemView from './TreeChildItemView'
 
 interface Props {
@@ -27,10 +31,16 @@ interface State {
   trees: Tree[],
 }
 
+export const TREE_CHILD_LIST_NAME = 'TreeChildListScreen'
+
+export function gotoTreeChildListScreen(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(TREE_CHILD_LIST_NAME)
+}
+
 /**
  * 页面：体系一级列表
  */
-export default class TreeChildScreen extends Component<Props & NavigationInjectedProps, State> {
+export class TreeChildListScreen extends Component<Props & NavigationInjectedProps, State> {
 
   static navigationOptions = {
     title: '体系',
@@ -57,10 +67,8 @@ export default class TreeChildScreen extends Component<Props & NavigationInjecte
    * @param {*} children 
    */
   onChildrenPress(children: Children) {
-    this.props.navigation.navigate('TreeGrandchild', {
-      title: children.name,
-      cid: children.id
-    })
+    const { navigation } = this.props
+    gotoTreeGrandchildListScreen(navigation, children.name, children.id)
   }
 
   render() {

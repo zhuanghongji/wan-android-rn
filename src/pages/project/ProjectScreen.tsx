@@ -9,9 +9,8 @@ import {
 
 import {
   NavigationInjectedProps,
+  NavigationScreenProp,
 } from 'react-navigation'
-
-import { Hotkey } from '../../apis'
 
 interface Props {
 }
@@ -19,10 +18,16 @@ interface Props {
 interface State {
 }
 
+export const PROJECT_SCREEN_NAME = 'ProjectScreen'
+
+export function gotoProjectScreen(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(PROJECT_SCREEN_NAME)
+}
+
 /**
  * 首页：项目
  */
-export default class ProjectScreen extends Component<Props & NavigationInjectedProps, State> {
+export class ProjectScreen extends Component<Props & NavigationInjectedProps, State> {
   static navigationOptions = {
     title: '项目',
   }
