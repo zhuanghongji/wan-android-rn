@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Responses, HttpManager } from '../index'
 
 /**
  * 项目分类，项目为包含一个分类，该接口返回整个分类。
@@ -9,11 +9,11 @@ import { Response, Responses } from '../index'
  * 方法： GET   
  * 参数： 无
  */
-export function getProjectTrees(): Responses<ProjectTree> {
-  return {} as Responses<ProjectTree>;
+export function getProjectTrees(): Promise<Responses<ProjectTree>> {
+  return HttpManager.get('/project/tree/json')
 }
 
-interface ProjectTree {
+export interface ProjectTree {
   children: any[];
   courseId: number;
   id: number;

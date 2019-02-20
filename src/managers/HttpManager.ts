@@ -75,7 +75,7 @@ class HttpManager {
    * @param path 资源路径，如 '/lg/todo/add/json'
    * @param params 参数，如 { a: 'A' }，默认值为 undefined
    */
-  static post<T>(url: string, params = undefined) {
+  static post<T>(url: string, params: any = undefined) {
       return request<T>('POST', url, params)
   }
 }

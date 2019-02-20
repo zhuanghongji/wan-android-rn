@@ -14,6 +14,6 @@ import { Response, Responses } from '../index'
  * originId 代表的是你收藏之前的那篇文章本身的id； 
  * 但是收藏支持主动添加，这种情况下，没有 originId 则为 -1
  */
-export function lgUncollect(id: number, originId: number) {
+export function uncollectArticle(id: number, originId: number) {
 
 }

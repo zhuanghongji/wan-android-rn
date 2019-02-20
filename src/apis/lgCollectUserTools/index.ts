@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Responses, HttpManager } from '../index'
 
 /**
  * 收藏网站列表
@@ -9,6 +9,23 @@ import { Response, Responses } from '../index'
  * 方法：GET  
  * 参数：无
  */
-export function lgCollectUserTools() {
+export function getLinkCollectedList(): Promise<Responses<LinkCollectedList>> {
+  return HttpManager.get('/lg/collect/usertools/json')
+}
 
+export interface LinkCollectedList {
+  data: LinkCollected[];
+  errorCode: number;
+  errorMsg: string;
+}
+
+export interface LinkCollected {
+  desc: string;
+  icon: string;
+  id: number;
+  link: string;
+  name: string;
+  order: number;
+  userId: number;
+  visible: number;
 }

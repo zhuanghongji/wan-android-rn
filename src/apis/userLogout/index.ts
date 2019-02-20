@@ -1,5 +1,6 @@
 
 import { Response, Responses } from '../index'
+import { HttpManager } from 'src/managers/HttpManager';
 
 /**
  * 退出
@@ -12,6 +13,6 @@ import { Response, Responses } from '../index'
  * 
  * 方法：GET
  */
-export function userLogout() {
-
+export function userLogout(): Promise<Response<null>> {
+  return HttpManager.get('/user/logout/json')
 }

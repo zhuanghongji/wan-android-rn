@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Response, HttpManager } from '../index'
 
 /**
  * 删除一条Todo
@@ -9,6 +9,6 @@ import { Response, Responses } from '../index'
  * 参数：
  * id: 拼接在链接上，为唯一标识
  */
-export function lgTodoDelete() {
-
+export function deleteTodo(id: number): Promise<Response<null>> {
+  return HttpManager.post(`/lg/todo/delete/${id}/json`)
 }

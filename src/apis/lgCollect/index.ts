@@ -1,5 +1,6 @@
 
 import { Response, Responses } from '../index'
+import { HttpManager } from 'src/managers/HttpManager';
 
 /**
  * 收藏站内文章
@@ -9,6 +10,6 @@ import { Response, Responses } from '../index'
  * 方法：POST
  * 参数： 文章 id，拼接在链接中。
  */
-export function lgCollect(articleId: number) {
-  
+export function collectArticle(articleId: number): Promise<Response<null>> {
+    return HttpManager.post(`/lg/collect/${articleId}/json`)
 }

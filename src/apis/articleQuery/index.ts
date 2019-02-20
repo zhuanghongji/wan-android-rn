@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Response, HttpManager, ArticleItem } from '../index'
 
 /**
  * 搜索
@@ -13,47 +13,16 @@ import { Response, Responses } from '../index'
  * 
  * 注意：支持多个关键词，用空格隔开
  */
-export function searchArticle(pageNum: number, k: string): Response<SearchArticle> {
-  return {} as Response<SearchArticle>;
+export function postArticleQuery(pageNum: number, k: string): Promise<Response<SearchArticle>> {
+  return HttpManager.post(`/article/query/${pageNum}/json`, { k })
 }
 
-interface SearchArticle {
+export interface ArticleQuery {
   curPage: number;
-  datas: Data[];
+  datas: ArticleItem[];
   offset: number;
   over: boolean;
   pageCount: number;
   size: number;
   total: number;
-}
-
-interface Data {
-  apkLink: string;
-  author: string;
-  chapterId: number;
-  chapterName: string;
-  collect: boolean;
-  courseId: number;
-  desc: string;
-  envelopePic: string;
-  fresh: boolean;
-  id: number;
-  link: string;
-  niceDate: string;
-  origin: string;
-  projectLink: string;
-  publishTime: number;
-  superChapterId: number;
-  superChapterName: string;
-  tags: Tag[];
-  title: string;
-  type: number;
-  userId: number;
-  visible: number;
-  zan: number;
-}
-
-interface Tag {
-  name: string;
-  url: string;
 }

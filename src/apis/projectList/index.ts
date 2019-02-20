@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Response, HttpManager } from '../index'
 
 /**
  * 项目列表数据
@@ -13,14 +13,15 @@ import { Response, Responses } from '../index'
  * - cid 分类的id，上面项目分类接口
  * - 页码：拼接在链接中，从1开始。
  */
-export function getProjectListByCid(): Response<ProjectList> {
-  return {} as Response<ProjectList>;
+export function getProjectListByCid(pageNum: number, cid: number)
+    : Promise<Response<ProjectList>> {
+  return HttpManager.get(`/project/list/${pageNum}/json?cid=${cid}`)
 }
 
 
-interface ProjectList {
+export interface ProjectList {
   curPage: number;
-  datas: Data[];
+  datas: ProjectItem[];
   offset: number;
   over: boolean;
   pageCount: number;
@@ -28,7 +29,7 @@ interface ProjectList {
   total: number;
 }
 
-interface Data {
+export interface ProjectItem {
   apkLink: string;
   author: string;
   chapterId: number;

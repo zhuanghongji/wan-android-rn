@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Response, HttpManager } from '../index'
 
 /**
  * 收藏站外文章
@@ -12,6 +12,33 @@ import { Response, Responses } from '../index'
  * - author
  * - link
  */
-export function lgCollectAdd(title: string, author: string, link: string) {
+export function collectOutsideArticle(title: string, author: string, link: string)
+      : Promise<Response<OutsideArticleCollection>> {
+  return HttpManager.post('/lg/collect/add/json', {
+    title, 
+    author, 
+    link,
+  })
+}
 
+/**
+ * 收藏站外文章
+ */
+export interface OutsideArticleCollection {
+  author: string;
+  chapterId: number;
+  chapterName: string;
+  courseId: number;
+  desc: string;
+  envelopePic: string;
+  id: number;
+  link: string;
+  niceDate: string;
+  origin: string;
+  originId: number;
+  publishTime: number;
+  title: string;
+  userId: number;
+  visible: number;
+  zan: number;
 }

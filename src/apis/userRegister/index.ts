@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Response, HttpManager } from '../index'
 
 /**
  * 注册
@@ -10,6 +10,23 @@ import { Response, Responses } from '../index'
  * 参数
  * - username, password, repassword
  */
-export function userRegister(username: string, password: string) {
+export function userRegister(username: string, password: string, repassword: string)
+    : Promise<Response<RegisterInfo>> {
+  return HttpManager.post('/user/register', {
+    username,
+    password,
+    repassword,
+  })
+}
 
+export interface RegisterInfo {
+  chapterTops: any[];
+  collectIds: any[];
+  email: string;
+  icon: string;
+  id: number;
+  password: string;
+  token: string;
+  type: number;
+  username: string;
 }

@@ -1,5 +1,5 @@
 
-import { Response, Responses } from '../index'
+import { Response, HttpManager } from '../index'
 
 /**
  * 最新项目tab (首页的第二个tab)，按时间分页展示所有项目（最新项目）。
@@ -9,13 +9,13 @@ import { Response, Responses } from '../index'
  * 方法：GET  
  * 参数：页码，拼接在连接中，从0开始。
  */
-export function getArticleListProject(pageNum: number): Response<ArticleListProject> {
- return {} as Response<ArticleListProject>;
+export function getArticleListProject(pageNum: number): Promise<Response<ArticleListProject>> {
+  return HttpManager.get(`/article/listproject/${pageNum}/json`)
 }
 
-interface ArticleListProject {
+export interface ArticleListProject {
   curPage: number;
-  datas: Data[];
+  datas: Project[];
   offset: number;
   over: boolean;
   pageCount: number;
@@ -23,7 +23,7 @@ interface ArticleListProject {
   total: number;
 }
 
-interface Data {
+export interface Project {
   apkLink: string;
   author: string;
   chapterId: number;
