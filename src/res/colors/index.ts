@@ -15,10 +15,11 @@ export const colors = {
   blue: '#0000FF',
   yellow: '#FFFF00',
 
-  primary: '#FFFFFF',
-  primaryLight: '#FFFFFF',
-  primaryDark: '#FFFFFF',
+  primaryLight: '#90caf9',
+  primary: '#1e88e5',
+  primaryDark: '#1976d2',
   accent: '#FFFFFF',
+  background: '#fafafa',
 
   red50: '#ffebee',
   red100: '#ffcdd2',
@@ -81,7 +82,7 @@ export const colors = {
   blue300: '#64b5f6',
   blue400: '#42a5f5',
   blue500: '#2196f3',
-  blue600: '#2196f3',
+  blue600: '#1e88e5',
   blue700: '#1976d2',
   blue800: '#1565c0',
   blue900: '#0d47a1',

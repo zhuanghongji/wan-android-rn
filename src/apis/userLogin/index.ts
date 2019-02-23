@@ -1,6 +1,5 @@
 
-import { Response, Responses } from '../index'
-import { HttpManager } from 'src/managers/HttpManager';
+import { Response, HttpManager } from '../index'
 
 /**
  * 登录，登录后会在cookie中返回账号密码，只要在客户端做cookie持久化存储即可自动登录验证。

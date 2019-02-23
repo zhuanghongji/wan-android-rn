@@ -13,7 +13,7 @@ import { Response, HttpManager, ArticleItem } from '../index'
  * 
  * 注意：支持多个关键词，用空格隔开
  */
-export function postArticleQuery(pageNum: number, k: string): Promise<Response<SearchArticle>> {
+export function postArticleQuery(pageNum: number, k: string): Promise<Response<ArticleQuery>> {
   return HttpManager.post(`/article/query/${pageNum}/json`, { k })
 }
 
