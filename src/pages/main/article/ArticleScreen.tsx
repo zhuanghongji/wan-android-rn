@@ -79,9 +79,9 @@ export class ArticleScreen extends Component<Props & NavigationInjectedProps, St
    * 加载首页 Banner 数据
    */
   loadBanner() {
-    getBanner().then(banner => {
+    getBanner().then(bannerItems => {
       this.setState({
-        bannerItems: [...banner.data]
+        bannerItems: [...bannerItems]
       })
     })
   }
@@ -118,7 +118,7 @@ export class ArticleScreen extends Component<Props & NavigationInjectedProps, St
         return {
           refreshing: false,
           articlesLoadingType: 'normal',
-          articles: [...tempArticles, ...articleList.data.datas],
+          articles: [...tempArticles, ...articleList.datas],
         }
       })
     }).catch(e => {

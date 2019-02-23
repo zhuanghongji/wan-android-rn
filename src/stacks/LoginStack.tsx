@@ -27,7 +27,9 @@ import {
 
 const LOGIN_STACK_NAME = 'LoginStack'
 
-type NavigationOptions2 = (navigation: NavigationInjectedProps ) => NavigationTabScreenOptionsBase
+function gotoLoginStack(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(LOGIN_STACK_NAME)
+}
 
 /**
  * 首页 Tab 导航器
@@ -44,5 +46,6 @@ const LoginStack = createStackNavigator(
 
 export {
   LOGIN_STACK_NAME,
+  gotoLoginStack,
   LoginStack,
 }

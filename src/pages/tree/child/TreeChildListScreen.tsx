@@ -52,9 +52,9 @@ export class TreeChildListScreen extends Component<Props & NavigationInjectedPro
 
   componentDidMount() {
     // 加载 “体系” 数据
-    getTree().then(response => {
+    getTree().then(trees => {
       this.setState({
-        trees: [...response.data],
+        trees: [...trees],
       })
     }).catch(e => {
       console.log(e)

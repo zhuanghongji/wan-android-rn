@@ -4,7 +4,6 @@ import {
   StyleSheet,
   View,
   FlatList,
-  RefreshControl,
   ActivityIndicator,
   ViewStyle,
 } from 'react-native'
@@ -109,7 +108,7 @@ export class TreeGrandchildListScreen extends Component<Props & NavigationInject
       nextPageNum = this.pageNum + 1
     }
     console.log(`开始加载 nextPageNum = ${nextPageNum} 的数据, cid = ${this.cid}`)
-    getArticleListByCid(nextPageNum, this.cid).then(response => {
+    getArticleListByCid(nextPageNum, this.cid).then(articleList => {
       this.pageNum = nextPageNum
       this.setState(prevState => {
         const tempArticles: ArticleItem[] = []
@@ -119,7 +118,7 @@ export class TreeGrandchildListScreen extends Component<Props & NavigationInject
         return {
           refreshing: false,
           articlesLoadingType: 'normal',
-          articles: [...tempArticles, ...response.data.datas],
+          articles: [...tempArticles, ...articleList.datas],
         }
       })
     }).catch(e => {

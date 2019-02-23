@@ -123,6 +123,10 @@ const bbb: NavigationOptions = ({ navigation }) => {
 
 const MAIN_STACK_NAME = "MainStack"
 
+function gotoMainStack(navigation: NavigationScreenProp<any>) {
+  navigation.navigate(MAIN_STACK_NAME)
+}
+
 const MainStack = createStackNavigator(
   {
     [MAIN_SCREEN_STACK_NAME]: {
@@ -146,5 +150,6 @@ const MainStack = createStackNavigator(
 
 export {
   MAIN_STACK_NAME,
+  gotoMainStack,
   MainStack,
 }

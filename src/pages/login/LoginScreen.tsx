@@ -29,6 +29,14 @@ import {
   userLogin,
 } from '../../apis'
 
+import {
+  alert,
+} from '../../m'
+
+import {
+  gotoMainStack,
+} from '../../stacks'
+
 interface Props {
 }
 
@@ -49,23 +57,22 @@ export function gotoLoginScreen(navigation: NavigationScreenProp<any>) {
 export class LoginScreen extends Component<Props & NavigationInjectedProps, State> {
 
   static navigationOptions = {
-    title: '登录',
+    title: '请先登录',
   }
 
   readonly state = {
-    username: "",
-    password: "",
+    username: "zhuanghongji",
+    password: "zhuanghongji",
   }
 
   performLogin() {
+    const { navigation } = this.props
     const { username, password } = this.state
-    userLogin(username, password).then(response => {
-      // console.log('loginInfo = ', response.data)
-      console.log('123')
-      alert(JSON.stringify(response))
+    userLogin(username, password).then(loginInfo => {
+      // alert(JSON.stringify(loginInfo))
+      gotoMainStack(navigation)
     }).catch(e => {
-      alert('aa')
-      console.log(e)
+      alert(e.message)
     })
   }
 

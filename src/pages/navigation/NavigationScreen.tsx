@@ -63,9 +63,9 @@ export class NavigationScreen extends Component<Props & NavigationInjectedProps,
    * 加载导航数据
    */
   loadNavi() {
-    getNavi().then(navi => {
+    getNavi().then(naviItems => {
       this.setState({
-        naviItems: [...navi.data],
+        naviItems: [...naviItems],
       })
     }).catch(e => {
       console.log(e)

@@ -51,9 +51,9 @@ export class SearchScreen extends Component<Props & NavigationInjectedProps, Sta
   }
 
   componentDidMount() {
-    getHotkey().then(responses => {
+    getHotkey().then(hotkeys => {
       this.setState({
-        hotkeys: [...responses.data],
+        hotkeys: [...hotkeys],
       })
     }).catch(err => { 
       console.log('loadHotKey error', err)

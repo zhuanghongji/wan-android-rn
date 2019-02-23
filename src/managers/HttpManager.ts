@@ -1,9 +1,32 @@
+import { func } from "prop-types";
+
+interface WanResponse<T> {
+  data: T;
+  errorCode: number;
+  errorMsg: string;
+}
+
+interface WanError {
+  code: number,
+  message: string,
+}
+
+const ErrorCode = {
+  /** 接口调用成功*/
+  SUCCESS: 0,
+  /** 登录失效，需要重新登录 */
+  LOGIN_FAILED: -1001,
+
+  /** 网络请求异常（自定义） */
+  RESPONSE_ONT_OK: -1,
+  /** 网络请求异常（自定义） */
+  RESPONSE_ERROR: -2,
+}
 
 /**
  * The base url of wanandroid.com api
  */
 const BASE_URL = 'http://www.wanandroid.com'
-
 
 /**
  * 从 params 中解析出参数
@@ -38,18 +61,34 @@ function request<T>(method: string, path: string, params = undefined): Promise<T
   }
   console.log('requestInit = ', requestInit)
 
-  return new Promise((resolve: (_: T) => void, reject: (e: any) => void) => {
+  return new Promise((resolve: (data: T) => void, reject: (e: WanError | null) => void) => {
     fetch(requestUrl, requestInit)
-      .then((response) => response.json())
-      .then((responseData: T) => {
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        return null
+      }).then((wanResponse: WanResponse<T> | null) => {
         // 网络请求成功返回的数据
-        console.log('res:', requestUrl, responseData);   
-        resolve(responseData);
+        console.log('response:', requestUrl, wanResponse);  
+        if (!wanResponse) {
+          reject({ code: ErrorCode.RESPONSE_ONT_OK, message: '网络请求异常，请稍后重试'})
+          return
+        }
+        if (wanResponse.errorCode === ErrorCode.LOGIN_FAILED) {
+          reject(null)
+          return
+        }
+        if (wanResponse.errorCode === ErrorCode.SUCCESS) {
+          resolve(wanResponse.data)
+          return
+        } 
+        reject({ code: wanResponse.errorCode, message: wanResponse.errorMsg })
       })
-      .catch((err) => {
+      .catch((e) => {
         // 网络请求失败返回的数据  
-        console.log('err:', requestUrl, err);   
-        reject(err);
+        console.log('catch:', requestUrl, e);   
+        reject({ code: ErrorCode.RESPONSE_ERROR, message: e.message })
       });
   })
 }
