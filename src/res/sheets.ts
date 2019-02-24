@@ -7,10 +7,9 @@ import {
 import {
   dimensions,
   colors,
-} from '../index'
+} from './index'
 
 interface Sheets {
-  // screenContainer: ViewStyle,
   screenContent: ViewStyle,
   absoluteFill: ViewStyle,
 }
@@ -19,9 +18,6 @@ interface Sheets {
  * 通用样式
  */
 export const sheets = StyleSheet.create<Sheets>({
-  // screenContainer: {
-  //   flex: 1,
-  // },
   screenContent: {
     flex: 1,
     width: dimensions.screenWidth,
