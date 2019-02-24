@@ -20,7 +20,16 @@ import {
   fontSizes,
 } from '../../../res'
 
-import { TodoItem } from 'src/apis';
+import { 
+  TodoItem, 
+  getTodoList,
+  getTodoListOfDone,
+  getTodoListOfTodo,
+} from '../../../apis';
+
+import {
+  alert,
+} from '../../../m'
 
 import { DoneView } from './DoneView'
 import { HeaderView } from './HeaderView'
@@ -30,6 +39,9 @@ interface Props {
 }
 
 interface State {
+  type: number,
+  todoItems: TodoItem[],
+  doneItems: TodoItem[],
 }
 
 export const TODO_SCREEN_NAME = 'TodoScreen'
@@ -47,6 +59,28 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
     title: '待办',
   }
 
+  readonly state = {
+    type: 0,
+    todoItems: Array<TodoItem>(),
+    doneItems: Array<TodoItem>(),
+  }
+
+  componentDidMount() {
+    getTodoListOfTodo(0).then(todoList => {
+      alert(JSON.stringify(todoList))
+      this.setState({ todoItems: [...todoList.datas] })
+    }).catch(e => {
+      alert(e.message)
+    })
+
+    getTodoListOfDone(0).then(todoList => {
+      alert(JSON.stringify(todoList))
+      this.setState({ doneItems: [...todoList.datas] })
+    }).catch(e => {
+      alert(e.message)
+    })
+  }
+
   renderItemTitle(text: string, color: string) {
     return (
       <View style={[styles.itemTitleContainer, { backgroundColor: color}]}>
@@ -55,28 +89,53 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
     )
   }
 
+  renderTodoItems(todoItems: TodoItem[]) {
+    return todoItems.map((value) => (
+      <TodoView 
+        key={value.id}
+        todoItem={value}
+        onCompletePress={() => {}}
+        onDeletePress={() => {}}
+      />
+    ))
+  }
+
+  renderDoneItems(todoItems: TodoItem[]) {
+    return todoItems.map((value) => (
+      <DoneView 
+        key={value.id}
+        doneItem={value}
+        onCompilePress={() => {}}
+        onDeletePress={() => {}}
+      />
+    ))
+  }
+
   render() {
+    const { type, todoItems, doneItems } = this.state
     return (
       <View style={sheets.screenContent}>
         <HeaderView 
           type={3} 
-          onTypeSelected={type => {}}
+          onTypeSelected={(type) => {}}
           onAddTodoPress={() => {}}
         />
 
         { this.renderItemTitle('待办清单', colors.green600) }
-        <TodoView 
+        { this.renderTodoItems(todoItems) }
+        {/* <TodoView 
           todoItem={{title: '123', content: 'ABCDEFG', dateStr: '2018-01-01'} as TodoItem}
           onCompletePress={() => {}}
           onDeletePress={() => {}}
-        />
+        /> */}
 
         { this.renderItemTitle('已完成清单', colors.orange600) }
-        <DoneView 
+        { this.renderDoneItems(doneItems) }
+        {/* <DoneView 
           doneItem={{title: '123', content: 'ABCDEFG', dateStr: '2018-01-01'} as TodoItem}
           onCompilePress={() => {}}
           onDeletePress={() => {}}
-        />
+        /> */}
       </View>
     )
   }

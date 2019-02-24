@@ -55,6 +55,7 @@ function request<T>(method: string, path: string, params = undefined): Promise<T
 
   let requestInit: RequestInit = {
     method: method,
+    credentials: 'same-origin',
   }
   if (params) {
     requestInit['body'] = getFormData(params)
@@ -75,14 +76,15 @@ function request<T>(method: string, path: string, params = undefined): Promise<T
           reject({ code: ErrorCode.RESPONSE_ONT_OK, message: '网络请求异常，请稍后重试'})
           return
         }
-        if (wanResponse.errorCode === ErrorCode.LOGIN_FAILED) {
-          reject(null)
-          return
-        }
+        
         if (wanResponse.errorCode === ErrorCode.SUCCESS) {
           resolve(wanResponse.data)
           return
         } 
+        // if (wanResponse.errorCode === ErrorCode.LOGIN_FAILED) {
+        //   reject({ code: wanResponse.errorCode, message: wanResponse.errorMsg })
+        //   return
+        // }
         reject({ code: wanResponse.errorCode, message: wanResponse.errorMsg })
       })
       .catch((e) => {

@@ -33,11 +33,10 @@ export function getTodoList(pageNum: number, status: number, type: number, prior
  * @param status 
  * @param type 
  */
-export function getTodoListOfTodo(pageNum: number, status: number, type: number)
+export function getTodoListOfTodo(pageNum: number)
     : Promise<TodoList> {
   return HttpManager.post(`/lg/todo/v2/list/${pageNum}/json`, {
-    status,
-    type,
+    status: 0,
     orderby: 4,
   })
 }
@@ -48,11 +47,10 @@ export function getTodoListOfTodo(pageNum: number, status: number, type: number)
  * @param status 
  * @param type 
  */
-export function getTodoListOfDone(pageNum: number, status: number, type: number)
+export function getTodoListOfDone(pageNum: number)
     : Promise<TodoList> {
   return HttpManager.post(`/lg/todo/v2/list/${pageNum}/json`, {
-    status,
-    type,
+    status: 1,
     orderby: 2,
   })
 }
