@@ -30,12 +30,17 @@ import {
 } from '../../../apis';
 
 import {
+  gotoTodoDetailScreen,
+} from '../../index'
+
+import {
   alert,
+  alertWithButton,
 } from '../../../m'
 
-import { DoneView } from './DoneView'
+import { DoneItemView } from './DoneItemView'
 import { HeaderView } from './HeaderView'
-import { TodoView } from './TodoView'
+import { TodoItemView } from './TodoItemView'
 import { CustomRefreshControl } from '../../../components';
 
 interface Props {
@@ -101,6 +106,22 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
     })
   }
 
+  onAddTodoPress = () => {
+    alert('添加 Todo')
+  }
+
+  onCompilePress = (doneItem: TodoItem) => {
+    alertWithButton('要设置为未完成', JSON.stringify(doneItem))
+  }
+
+  onCompletePress = (todoItem: TodoItem) => {
+    alertWithButton('要设置为完成', JSON.stringify(todoItem))
+  }
+
+  onDeletePress = (item: TodoItem) => {
+    alertWithButton('要删除', JSON.stringify(item))
+  }
+
   renderItemTitle(text: string, color: string) {
     return (
       <View style={[styles.itemTitleContainer, { backgroundColor: color}]}>
@@ -110,23 +131,27 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
   }
 
   renderTodoItems(todoItems: TodoItem[]) {
+    const { navigation } = this.props
     return todoItems.map((value) => (
-      <TodoView 
+      <TodoItemView 
         key={value.id}
         todoItem={value}
-        onCompletePress={() => {}}
-        onDeletePress={() => {}}
+        onItemPress={() => gotoTodoDetailScreen(navigation, value)}
+        onCompletePress={this.onCompletePress}
+        onDeletePress={this.onDeletePress}
       />
     ))
   }
 
   renderDoneItems(todoItems: TodoItem[]) {
+    const { navigation } = this.props
     return todoItems.map((value) => (
-      <DoneView 
+      <DoneItemView 
         key={value.id}
         doneItem={value}
-        onCompilePress={() => {}}
-        onDeletePress={() => {}}
+        onItemPress={() => gotoTodoDetailScreen(navigation, value)}
+        onCompilePress={this.onCompilePress}
+        onDeletePress={this.onDeletePress}
       />
     ))
   }
@@ -139,7 +164,7 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
         <HeaderView 
           type={type} 
           onTypeSelected={type => this.setState({ type })}
-          onAddTodoPress={() => {}}
+          onAddTodoPress={this.onAddTodoPress}
         />
         <ScrollView
           refreshControl={(

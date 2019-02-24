@@ -24,14 +24,18 @@ import {
 
 interface Props {
   todoItem: TodoItem,
+  onItemPress: () => void;
   onCompletePress: (todoItem: TodoItem) => void;
   onDeletePress: (todoItem: TodoItem) => void;
 }
 
-function TodoView(props: Props) {
-  const { todoItem, onCompletePress, onDeletePress } = props
+function TodoItemView(props: Props) {
+  const { todoItem, onItemPress, onCompletePress, onDeletePress } = props
   return (
-    <View style={styles.container}>
+    <TouchableOpacity 
+      style={styles.container}
+      onPress={() => onItemPress()}
+    >
       <TouchableOpacity
         style={styles.icContainer}
         onPress={() => onCompletePress(todoItem)}
@@ -51,7 +55,7 @@ function TodoView(props: Props) {
       >
         <Image style={styles.icDelete}source={images.icDelete} />
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -108,5 +112,5 @@ const styles = StyleSheet.create<Styles>({
 })
 
 export {
-  TodoView,
+  TodoItemView,
 }

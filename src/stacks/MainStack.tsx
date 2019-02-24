@@ -55,6 +55,9 @@ import {
   
   SITES_SCREEN_NAME,
   SitesScreen,
+
+  TODO_DETAIL_SCREEN_NAME,
+  TodoDetailScreen,
 } from '../pages'
 
 const MAIN_SCREEN_STACK_NAME = 'MainScreenStack'
@@ -140,6 +143,7 @@ const MainStack = createStackNavigator(
     [TREE_GRANDCHILD_SCREEN_NAME]: TreeGrandchildListScreen,
     [PROJECT_SCREEN_NAME]: ProjectScreen,
     [SITES_SCREEN_NAME]: SitesScreen,
+    [TODO_DETAIL_SCREEN_NAME]: TodoDetailScreen,
   },
   {
     navigationOptions: {

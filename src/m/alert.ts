@@ -12,7 +12,7 @@ export function alert(message: string, onPress?: () => void) {
   Alert.alert('温馨提示', message, [{ text: '确定', onPress }], { cancelable: false })
 }
 
-export function alertWithButton(title: string, message: string, buttonText: string, onPress?: () => void) {
+export function alertWithButton(title: string, message: string, buttonText = '确定', onPress?: () => void) {
   Alert.alert(title, message, [{ text: buttonText, onPress }], { cancelable: false })
 }
 

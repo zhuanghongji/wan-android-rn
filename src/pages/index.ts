@@ -70,3 +70,9 @@ export {
   gotoLoginScreen,
   LoginScreen,
 } from './login/LoginScreen'
+
+export {
+  TODO_DETAIL_SCREEN_NAME,
+  gotoTodoDetailScreen,
+  TodoDetailScreen,
+} from './tododetail/TodoDetailScreen'
