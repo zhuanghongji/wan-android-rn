@@ -24,8 +24,8 @@ import {
 
 interface Props {
   todoItem: TodoItem,
-  onCompletePress: () => void;
-  onDeletePress: () => void;
+  onCompletePress: (todoItem: TodoItem) => void;
+  onDeletePress: (todoItem: TodoItem) => void;
 }
 
 function TodoView(props: Props) {
@@ -34,7 +34,7 @@ function TodoView(props: Props) {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.icContainer}
-        onPress={() => onCompletePress()}
+        onPress={() => onCompletePress(todoItem)}
       >
         <Image style={styles.icDispose} source={images.icDispose} />
       </TouchableOpacity>
@@ -47,7 +47,7 @@ function TodoView(props: Props) {
 
       <TouchableOpacity
         style={styles.icContainer}
-        onPress={() => onDeletePress()}
+        onPress={() => onDeletePress(todoItem)}
       >
         <Image style={styles.icDelete}source={images.icDelete} />
       </TouchableOpacity>
@@ -71,8 +71,8 @@ const styles = StyleSheet.create<Styles>({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    width: dimensions.screenWidth,
     paddingHorizontal: 16,
+    marginHorizontal: 16,
     backgroundColor: colors.green50,
   },
   icContainer: {

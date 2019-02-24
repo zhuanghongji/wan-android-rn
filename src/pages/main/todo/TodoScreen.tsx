@@ -6,6 +6,7 @@ import {
   Text,
   ViewStyle,
   TextStyle,
+  ScrollView,
 } from 'react-native'
 
 import {
@@ -22,9 +23,10 @@ import {
 
 import { 
   TodoItem, 
-  getTodoList,
   getTodoListOfDone,
   getTodoListOfTodo,
+  updateTodoStatus,
+  deleteTodo,
 } from '../../../apis';
 
 import {
@@ -34,13 +36,16 @@ import {
 import { DoneView } from './DoneView'
 import { HeaderView } from './HeaderView'
 import { TodoView } from './TodoView'
+import { CustomRefreshControl } from '../../../components';
 
 interface Props {
 }
 
 interface State {
   type: number,
+  loadingTodo: boolean,
   todoItems: TodoItem[],
+  loadingDone: boolean,
   doneItems: TodoItem[],
 }
 
@@ -60,24 +65,39 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
   }
 
   readonly state = {
-    type: 0,
+    type: -1,
+    loadingTodo: false,
     todoItems: Array<TodoItem>(),
+    loadingDone: false,
     doneItems: Array<TodoItem>(),
   }
 
   componentDidMount() {
+    this.performOnRefresh()
+  }
+
+  performOnRefresh() {
+    this.setState({
+      loadingTodo: true,
+      loadingDone: true,
+    })
+
+    // 加载未完成 Todo 清单
     getTodoListOfTodo(0).then(todoList => {
-      alert(JSON.stringify(todoList))
       this.setState({ todoItems: [...todoList.datas] })
     }).catch(e => {
       alert(e.message)
-    })
+    }).finally(() => {
+      this.setState({ loadingTodo: false })
+    }) 
 
+    // 加载已完成 Todo 清单
     getTodoListOfDone(0).then(todoList => {
-      alert(JSON.stringify(todoList))
       this.setState({ doneItems: [...todoList.datas] })
     }).catch(e => {
       alert(e.message)
+    }).finally(() => {
+      this.setState({ loadingDone: false })
     })
   }
 
@@ -112,30 +132,29 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
   }
 
   render() {
-    const { type, todoItems, doneItems } = this.state
+    const { type, loadingTodo, todoItems, loadingDone, doneItems } = this.state
+    const refreshing = loadingTodo && loadingDone
     return (
       <View style={sheets.screenContent}>
         <HeaderView 
-          type={3} 
-          onTypeSelected={(type) => {}}
+          type={type} 
+          onTypeSelected={type => this.setState({ type })}
           onAddTodoPress={() => {}}
         />
+        <ScrollView
+          refreshControl={(
+            <CustomRefreshControl 
+              refreshing={refreshing} 
+              onRefresh={() => this.performOnRefresh()} 
+            />
+          )}
+        >
+          { this.renderItemTitle('待办清单', colors.green600) }
+          { this.renderTodoItems(todoItems) }
 
-        { this.renderItemTitle('待办清单', colors.green600) }
-        { this.renderTodoItems(todoItems) }
-        {/* <TodoView 
-          todoItem={{title: '123', content: 'ABCDEFG', dateStr: '2018-01-01'} as TodoItem}
-          onCompletePress={() => {}}
-          onDeletePress={() => {}}
-        /> */}
-
-        { this.renderItemTitle('已完成清单', colors.orange600) }
-        { this.renderDoneItems(doneItems) }
-        {/* <DoneView 
-          doneItem={{title: '123', content: 'ABCDEFG', dateStr: '2018-01-01'} as TodoItem}
-          onCompilePress={() => {}}
-          onDeletePress={() => {}}
-        /> */}
+          { this.renderItemTitle('已完成清单', colors.orange600) }
+          { this.renderDoneItems(doneItems) }
+        </ScrollView>
       </View>
     )
   }
@@ -143,6 +162,7 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
 
 interface Styles {
   container: ViewStyle,
+  scrollView: ViewStyle,
   itemTitleContainer: ViewStyle,
   itemTitleText: TextStyle,
 }
@@ -154,10 +174,14 @@ const styles = StyleSheet.create<Styles>({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  scrollView: {
+    flex: 1,
+  },
   itemTitleContainer: {
-    width: dimensions.screenWidth,
+    width: dimensions.screenWidth - 32,
     height: 48,
     marginTop: 8,
+    marginHorizontal: 16,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     justifyContent: 'center',

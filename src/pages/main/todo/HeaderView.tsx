@@ -19,7 +19,7 @@ import {
 } from '../../../res'
 
 interface Props {
-  type: 0 | 1 | 2 | 3;
+  type: number;
   onTypeSelected: (type: number) => void;
   onAddTodoPress: () => void;
 }
@@ -28,34 +28,7 @@ function HeaderView(props: Props) {
   const { type, onTypeSelected, onAddTodoPress } = props
   return (
     <View style={styles.container}>
-      {/* <TouchableOpacity 
-        style={getTypeButtonStyles(type, 0)}
-        onPress={() => onTypeSelected(0)}
-      >
-        <Text style={styles.typeText}>只用这一个</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-        style={getTypeButtonStyles(type, 1)}
-        onPress={() => onTypeSelected(1)}
-      >
-        <Text style={getTypeButtonStyles(type, 0)}>工作</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-        style={getTypeButtonStyles(type, 2)}
-        onPress={() => onTypeSelected(2)}
-      >
-        <Text style={styles.typeText}>学习</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-        style={getTypeButtonStyles(type, 3)}
-        onPress={() => onTypeSelected(3)}
-      >
-        <Text style={styles.typeText}>生活</Text>
-      </TouchableOpacity> */}
-
+      { getTypeButton(type, -1, '全部', onTypeSelected) }
       { getTypeButton(type, 0, '只用这一个', onTypeSelected) }
       { getTypeButton(type, 1, '工作', onTypeSelected) }
       { getTypeButton(type, 2, '学习', onTypeSelected) }
