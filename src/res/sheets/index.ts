@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 
 import {
+  dimensions,
   colors,
 } from '../index'
 
@@ -23,8 +24,9 @@ export const sheets = StyleSheet.create<Sheets>({
   // },
   screenContent: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: dimensions.screenWidth,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     backgroundColor: colors.grey50,
   },
   absoluteFill: {

@@ -27,6 +27,36 @@ export function getTodoList(pageNum: number, status: number, type: number, prior
   })
 }
 
+/**
+ * 获取待完成的 TODO 清单
+ * @param pageNum 
+ * @param status 
+ * @param type 
+ */
+export function getTodoListOfTodo(pageNum: number, status: number, type: number)
+    : Promise<TodoList> {
+  return HttpManager.post(`/lg/todo/v2/list/${pageNum}/json`, {
+    status,
+    type,
+    orderby: 4,
+  })
+}
+
+/**
+ * 获取已完成的 TODO 清单
+ * @param pageNum 
+ * @param status 
+ * @param type 
+ */
+export function getTodoListOfDone(pageNum: number, status: number, type: number)
+    : Promise<TodoList> {
+  return HttpManager.post(`/lg/todo/v2/list/${pageNum}/json`, {
+    status,
+    type,
+    orderby: 2,
+  })
+}
+
 export interface TodoList {
   curPage: number;
   datas: TodoItem[];

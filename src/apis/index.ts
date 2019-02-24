@@ -122,21 +122,21 @@ export {
 
 export {
   updateTodoStatus,
-  UpdateTodo,
+  UpdateTodoStatusResult,
 } from './lgTodoDone'
 
 export {
   getTodoList,
+  getTodoListOfTodo,
+  getTodoListOfDone,
   TodoList,
   TodoItem,
-} from './lgTodoListDone'
+} from './lgTodoList'
 
 import {
-
-} from './lgTodoListNotDo'
-
-import {
-
+  updateTodo,
+  UpdateTodoParams,
+  UpdateTodoResult,
 } from './lgTodoUpdate'
 
 import {
