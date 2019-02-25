@@ -20,6 +20,8 @@ import {
   BannerItem,
   getArticleList,
   ArticleItem,
+  collectArticle,
+  uncollectArticle,
 } from '../../../apis'
 
 import {
@@ -32,14 +34,16 @@ import {
   gotoWebScreen,
 } from '../../../pages'
 
+import { 
+  alert,
+} from '../../../m';
+
 interface Props {
 } 
 
 interface State {
   refreshing: boolean,
-  
   bannerItems: BannerItem[],
-
   articlesLoadingType: LoadMoreViewType,
   articles: ArticleItem[],
 }
@@ -61,9 +65,7 @@ export class ArticleScreen extends Component<Props & NavigationInjectedProps, St
 
   readonly state = {
     refreshing: false,
-
     bannerItems: Array<BannerItem>(),
-
     articlesLoadingType: 'normal' as LoadMoreViewType,
     articles: Array<ArticleItem>(),
   }
@@ -91,7 +93,7 @@ export class ArticleScreen extends Component<Props & NavigationInjectedProps, St
    * 
    * @param isRefresh true 重新加载；false 加载更多
    */
-  loadArticles(isRefresh: boolean) {
+  loadArticles = (isRefresh: boolean) => {
     const { refreshing, articlesLoadingType } = this.state
     if (refreshing || articlesLoadingType == 'loading') {
       console.log('正在加载中，请稍后尝试')
@@ -132,7 +134,7 @@ export class ArticleScreen extends Component<Props & NavigationInjectedProps, St
   /**
    * 重新加载 Banner 数据和文章列表
    */
-  onRefreshBannerAndArticles() {
+  onRefreshBannerAndArticles = () => {
     console.log('onRefreshBannerAndArticles')
     this.loadBanner()
     this.loadArticles(true)
@@ -142,7 +144,7 @@ export class ArticleScreen extends Component<Props & NavigationInjectedProps, St
    * 文章列表项点击事件回调方法
    * @param {*} article 文章数据
    */
-  onArticleItemPress(articleItem: ArticleItem) {
+  onArticleItemPress = (articleItem: ArticleItem) => {
     gotoWebScreen(this.props.navigation, articleItem.title, articleItem.link)
   }
 
@@ -150,28 +152,68 @@ export class ArticleScreen extends Component<Props & NavigationInjectedProps, St
    * 轮播图项点击事件回调方法
    * @param {*} item 轮播图项数据
    */
-  onBannerItemPress(bannerItem: BannerItem) {
+  onBannerItemPress = (bannerItem: BannerItem) => {
     gotoWebScreen(this.props.navigation, bannerItem.title, bannerItem.url)
   }
 
+  onCollectPress = (articleItem: ArticleItem, toCollect: boolean) => {
+    const targetId = articleItem.id
+    const { articles } = this.state
+    if (toCollect) {
+      // 调用收藏接口
+      collectArticle(targetId).then(() => {
+        const newArticles = [...articles]
+        for (const art of newArticles) {
+          if (art.id === targetId) {
+            art.collect = true
+          }
+        }
+        this.setState({  articles: newArticles})
+      }).catch(() => {
+        alert('收藏失败')
+      })
+      return
+    }
+
+    // 调用取消收藏接口
+    uncollectArticle(targetId).then(() => {
+      const newArticles = [...articles]
+      for (const art of newArticles) {
+        if (art.id === targetId) {
+          art.collect = false
+        }
+      }
+      this.setState({  articles: newArticles})
+    }).catch(() => {
+      alert('取消收藏失败')
+    })
+  }
+
   render() {
-    const { refreshing, bannerItems, articlesLoadingType, articles } = this.state
+    const { 
+      refreshing, 
+      bannerItems, 
+      articlesLoadingType, 
+      articles, 
+    } = this.state
+
     return (
       <View style={styles.container}>
         <FlatList 
           style={styles.flatList}
           data={articles}
-          keyExtractor={(article: ArticleItem) => article.link}
+          keyExtractor={item => item.link}
           ListHeaderComponent={() => (
             <ArticleBannerView 
               bannerItems={bannerItems}
-              onItemPress={(item) => this.onBannerItemPress(item)}
+              onItemPress={this.onBannerItemPress}
             />
           )}
           renderItem={({ item }) => (
             <ArticleItemView 
               articleItem={item} 
-              onItemPress={articleItem => this.onArticleItemPress(articleItem)}
+              onItemPress={this.onArticleItemPress}
+              onCollectPress={toCollect => this.onCollectPress(item, toCollect)}
             />
           )}
           ListFooterComponent={ <LoadMoreView type={articlesLoadingType as LoadMoreViewType}/> }
@@ -180,7 +222,7 @@ export class ArticleScreen extends Component<Props & NavigationInjectedProps, St
           refreshControl={(
             <CustomRefreshControl 
               refreshing={refreshing}
-              onRefresh={() => this.onRefreshBannerAndArticles()}
+              onRefresh={this.onRefreshBannerAndArticles}
             />
           )}
         />

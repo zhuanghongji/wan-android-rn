@@ -10,6 +10,7 @@ import { HttpManager } from './index'
  * 参数：  
  * - id: 列表中文章的id，拼接在链接上
  */
-export function lgUncollectOriginId(articleId: number) {
-
+export function uncollectArticle(articleId: number): Promise<null> {
+  return HttpManager.post(`/lg/uncollect_originId/${articleId}/json`)
 }
+

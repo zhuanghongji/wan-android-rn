@@ -20,9 +20,15 @@ import {
   ArticleItem,
 } from '../../../apis'
 
+import {
+  TagGroup,
+  CollectView,
+} from '../../../components'
+
 interface Props {
   articleItem: ArticleItem,
-  onItemPress?: (articleItem: ArticleItem) => void,
+  onItemPress: (articleItem: ArticleItem) => void,
+  onCollectPress: (toCollect: boolean) => void,
 }
 
 interface State {
@@ -31,9 +37,8 @@ interface State {
 export default class ArticleItemView extends Component<Props, State>  {
 
   render() {
-    const { articleItem, onItemPress } = this.props
+    const { articleItem, onItemPress, onCollectPress } = this.props
     let icHead = images.icMan
-    let icLike = articleItem.collect ? images.icLikeTrue : images.icLikeFalse
     return (
       <TouchableOpacity 
         onPress={() => onItemPress && onItemPress(articleItem)}
@@ -54,11 +59,11 @@ export default class ArticleItemView extends Component<Props, State>  {
           </View>
 
           <View style={styles.rowBottom}>
-            <Text style={styles.txtchapterName}>{articleItem.chapterName}</Text>
+            <TagGroup tags={articleItem.tags} onTagPress={() => {}}/>
             <View style={{ flex: 1 }} />
-            <Image 
-              style={styles.like} 
-              source={icLike} 
+            <CollectView 
+              collect={articleItem.collect} 
+              onCollectPress={toCollect => onCollectPress(toCollect)}
             />
           </View>
         </View>

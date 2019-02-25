@@ -144,8 +144,8 @@ import {
 
 } from './lgUncollect'
 
-import {
-
+export {
+  uncollectArticle,
 } from './lgUncollectOriginId'
 
 export {
