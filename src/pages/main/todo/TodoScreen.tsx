@@ -31,6 +31,7 @@ import {
 
 import {
   gotoTodoDetailScreen,
+  gotoAddTodoScreen,
 } from '../../index'
 
 import {
@@ -107,7 +108,8 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
   }
 
   onAddTodoPress = () => {
-    alert('添加 Todo')
+    // alert('添加 Todo')
+    gotoAddTodoScreen(this.props.navigation)
   }
 
   onCompilePress = (doneItem: TodoItem) => {

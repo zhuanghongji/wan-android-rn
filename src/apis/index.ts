@@ -113,7 +113,8 @@ export {
 
 export {
   addTodo,
-  AddTodo,
+  AddTodoParam,
+  AddTodoResult,
 } from './lgTodoAdd'
 
 export {
