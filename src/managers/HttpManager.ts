@@ -32,12 +32,14 @@ const BASE_URL = 'http://www.wanandroid.com'
  * 从 params 中解析出参数
  * @param params 如 { a: 'A'}
  */
-function getFormData(params: any): FormData {
-  let formData = new FormData()
-  for (var key in params) {
-      formData.append(key, params[key])
+function getParams(params: any) {
+  let formBody = [] as string[];
+  for (let property in params) {
+      let encodedKey = encodeURIComponent(property);
+      let encodedValue = encodeURIComponent(params[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
   }
-  return formData
+  return formBody.join("&");
 }
 
 /**
@@ -58,8 +60,12 @@ function request<T>(method: string, path: string, params = undefined): Promise<T
     credentials: 'same-origin',
   }
   if (params) {
-    requestInit['body'] = getFormData(params)
+    requestInit['body'] = getParams(params)
   }
+  requestInit['headers'] = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+  };
   console.log('requestInit = ', requestInit)
 
   return new Promise((resolve: (data: T) => void, reject: (e: WanError | null) => void) => {

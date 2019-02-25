@@ -107,21 +107,62 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
     })
   }
 
+  /**
+   * 跳转到添加 TODO 页面
+   */
   onAddTodoPress = () => {
-    // alert('添加 Todo')
     gotoAddTodoScreen(this.props.navigation)
   }
 
+  /**
+   * 将 TODO 设置为未完成
+   */
   onCompilePress = (doneItem: TodoItem) => {
-    alertWithButton('要设置为未完成', JSON.stringify(doneItem))
+    // alertWithButton('要设置为未完成', JSON.stringify(doneItem))
+    const targetId = doneItem.id
+    updateTodoStatus(targetId, 'todo').then(() => {
+      const newTodoItem: TodoItem = {...doneItem, status: 0}
+      const { doneItems ,todoItems, } = this.state
+      this.setState({
+        doneItems: doneItems.filter(value => value.id !== targetId),
+        todoItems: [...todoItems, newTodoItem],
+      })
+    }).catch(e => {
+      alert(e.message)
+    })
   }
 
+  /**
+   * 将 TODO 设置为已完成
+   */
   onCompletePress = (todoItem: TodoItem) => {
-    alertWithButton('要设置为完成', JSON.stringify(todoItem))
+    const targetId = todoItem.id
+    updateTodoStatus(targetId, 'done').then(() => {
+      const newDoneItem: TodoItem = {...todoItem, status: 1}
+      const { doneItems ,todoItems, } = this.state
+      this.setState({
+        doneItems: [...doneItems, newDoneItem],
+        todoItems: todoItems.filter(value => value.id !== targetId),
+      })
+    }).catch(e => {
+      alert(e.message)
+    })
   }
 
+  /**
+   * 删除 TODO
+   */
   onDeletePress = (item: TodoItem) => {
-    alertWithButton('要删除', JSON.stringify(item))
+    const targetId = item.id
+    deleteTodo(targetId).then(() => {
+      const { doneItems ,todoItems, } = this.state
+      this.setState({
+        doneItems: doneItems.filter(value => value.id !== targetId),
+        todoItems: todoItems.filter(value => value.id !== targetId),
+      })
+    }).catch(e => {
+      alert(e.message)
+    }) 
   }
 
   renderItemTitle(text: string, color: string) {
