@@ -111,7 +111,9 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
    * 跳转到添加 TODO 页面
    */
   onAddTodoPress = () => {
-    gotoAddTodoScreen(this.props.navigation)
+    gotoAddTodoScreen(this.props.navigation, () => {
+      this.performOnRefresh()
+    })
   }
 
   /**

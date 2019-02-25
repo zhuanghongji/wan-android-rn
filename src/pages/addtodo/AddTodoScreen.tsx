@@ -20,6 +20,13 @@ import {
 } from 'react-navigation'
 
 import {
+  Toast,
+  DatePickerView,
+  Portal,
+  WhiteSpace,
+} from '@ant-design/react-native'
+
+import {
   dimensions,
   sheets,
   colors,
@@ -36,20 +43,30 @@ import {
   alert, alertWithButton,
 } from '../../m'
 
+import {
+  formatDate,
+} from '../../utils'
+
 type InputIdentify = '' | 'title' | 'content' | 'date'
 
 interface Props {
 }
 
 interface State {
-  addTodoParam: AddTodoParam,
+  title: string,
+  content: string,
+  dateValue: Date,
   currentIdentify: InputIdentify,
 }
 
+const PARAM_ON_ADD_TODO_SUCCESS = 'on_add_todo_success'
+
 export const ADD_TODO_SCREEN_NAME = 'AddTodoScreen'
 
-export function gotoAddTodoScreen(navigation: NavigationScreenProp<any>) {
-  navigation.navigate(ADD_TODO_SCREEN_NAME)
+export function gotoAddTodoScreen(navigation: NavigationScreenProp<any>, onAddTodoSuccess: () => void) {
+  navigation.navigate(ADD_TODO_SCREEN_NAME, {
+    [PARAM_ON_ADD_TODO_SUCCESS]: onAddTodoSuccess,
+  })
 }
 
 /**
@@ -62,30 +79,48 @@ export class AddTodoScreen extends Component<Props & NavigationInjectedProps, St
   }
 
   readonly state = {
-    addTodoParam: {
-      title: '',
-      content: '',
-      date: new Date().getTime(),
-      type: 0,
-      priority: 1,
-    },
+    title: '',
+    content: '',
+    dateValue: new Date(),
     currentIdentify: '' as InputIdentify,
   }
 
   onChangeText(text: string, currentIdentify: InputIdentify) {
-    const { addTodoParam } = this.state 
     if (currentIdentify === 'title') {
-      this.setState({ addTodoParam: {...addTodoParam, title: text} })
+      this.setState({ title: text })
     } else if (currentIdentify === 'content') {
-      this.setState({ addTodoParam: {...addTodoParam, content: text} })
-    } else if (currentIdentify === 'date') {
-      this.setState({ addTodoParam: {...addTodoParam, date: parseInt(text)} })
+      this.setState({ content: text })
     }
   }
 
+  onDateChange(value: Date) { 
+    this.setState({ dateValue: value })
+  }
+
+  /**
+   * 提交待办事项
+   */
   onSubmitPress = () => {
-    const { addTodoParam } = this.state
-    alertWithButton('点击提交', JSON.stringify(addTodoParam))
+    const { title, content, dateValue } = this.state
+    if (!title) {
+      alert('请输入待办事项标题')
+      return
+    }
+    if (!content) {
+      alert('请输入待办事项详细内容')
+      return
+    }
+
+    addTodo(title, content, formatDate(dateValue)).then(() => {
+      alertWithButton('温馨提示', '添加待办事项成功', '确定', () => {
+        // 返回上一个页面
+        const { navigation } = this.props
+        navigation.goBack()
+        // 回调以便刷新 TODO 列表
+        const onAddTodoSuccess = navigation.getParam(PARAM_ON_ADD_TODO_SUCCESS, undefined)
+        onAddTodoSuccess && onAddTodoSuccess()
+      })
+    })
   }
 
   renderSectionTitle(icSource: number, text: string) {
@@ -119,18 +154,22 @@ export class AddTodoScreen extends Component<Props & NavigationInjectedProps, St
   }
 
   render() {
-    const { addTodoParam, currentIdentify } = this.state
+    const { title, content, dateValue, currentIdentify } = this.state
     return (
       <View style={sheets.screenContent}>
         <ScrollView style={styles.scrollView}>
           { this.renderSectionTitle(images.icDiscovery, '标题') }
-          { this.renderTextInput(addTodoParam.title, currentIdentify, 'title') }
+          { this.renderTextInput(title, currentIdentify, 'title') }
 
           { this.renderSectionTitle(images.icDoc, '内容') }
-          { this.renderTextInput(addTodoParam.content, currentIdentify, 'content') }
+          { this.renderTextInput(content, currentIdentify, 'content') }
 
           { this.renderSectionTitle(images.icCalendar, '日期') }
-          { this.renderTextInput(String(addTodoParam.date), currentIdentify, 'date') }
+          <DatePickerView 
+            mode='date'
+            value={dateValue}
+            onChange={value => this.onDateChange(value)}
+          />
           
           <View style={styles.buttonsContainer}>
             <Text style={styles.button} onPress={this.onSubmitPress}>提交</Text>

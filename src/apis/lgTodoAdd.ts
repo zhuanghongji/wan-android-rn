@@ -20,7 +20,7 @@ import { HttpManager } from './index'
  * priority 主要用于定义优先级，在app 中预定义几个优先级：
  * 重要（1），一般（2）等，查询的时候，传入priority 进行筛选；
  */
-export function addTodo(title: string, content: string, date = "", type = 0, priority = 1): Promise<AddTodoResult> {
+export function addTodo(title: string, content: string, date: string, type = 0, priority = 1): Promise<AddTodoResult> {
   return HttpManager.post('http://www.wanandroid.com/lg/todo/add/json', {
     title,
     content,
@@ -29,15 +29,6 @@ export function addTodo(title: string, content: string, date = "", type = 0, pri
     priority,
   })
 }
-
-export interface AddTodoParam {
-  title: string;
-  content: string;
-  date: number;
-  type: number;
-  priority: number;
-}
-
 
 export interface AddTodoResult {
   completeDate?: any;
