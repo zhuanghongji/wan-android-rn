@@ -117,6 +117,13 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
   }
 
   /**
+   * 修改 TODO 成功后刷新列表
+   */
+  onUpdateTodoSuccess = () => {
+    this.performOnRefresh()
+  }
+
+  /**
    * 将 TODO 设置为未完成
    */
   onCompilePress = (doneItem: TodoItem) => {
@@ -181,7 +188,7 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
       <TodoItemView 
         key={value.id}
         todoItem={value}
-        onItemPress={() => gotoTodoDetailScreen(navigation, value)}
+        onItemPress={() => gotoTodoDetailScreen(navigation, value, () => this.onUpdateTodoSuccess())}
         onCompletePress={this.onCompletePress}
         onDeletePress={this.onDeletePress}
       />
@@ -194,7 +201,7 @@ export class TodoScreen extends Component<Props & NavigationInjectedProps, State
       <DoneItemView 
         key={value.id}
         doneItem={value}
-        onItemPress={() => gotoTodoDetailScreen(navigation, value)}
+        onItemPress={() => gotoTodoDetailScreen(navigation, value, () => this.onUpdateTodoSuccess())}
         onCompilePress={this.onCompilePress}
         onDeletePress={this.onDeletePress}
       />

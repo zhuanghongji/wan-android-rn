@@ -58,3 +58,12 @@ buck-out/
 # Jest
 #
 .jest/
+
+# vscode
+#
+.vscode/
+
+# android
+#
+android/.project
+android/.settings/org.eclipse.buildship.core.prefs

@@ -113,7 +113,6 @@ export {
 
 export {
   addTodo,
-  AddTodoParam,
   AddTodoResult,
 } from './lgTodoAdd'
 
@@ -134,7 +133,7 @@ export {
   TodoItem,
 } from './lgTodoList'
 
-import {
+export {
   updateTodo,
   UpdateTodoParams,
   UpdateTodoResult,

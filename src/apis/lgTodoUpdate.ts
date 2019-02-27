@@ -26,7 +26,7 @@ export function updateTodo(id: number, params: UpdateTodoParams): Promise<Update
 export interface UpdateTodoParams {
   title: string;
   content: string;
-  date: number;
+  date: string;
   status?: number;
   type?: number;
   priority?: number;

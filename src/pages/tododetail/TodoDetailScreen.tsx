@@ -20,6 +20,10 @@ import {
 } from 'react-navigation'
 
 import {
+  DatePickerView,
+} from '@ant-design/react-native'
+
+import {
   dimensions,
   sheets,
   colors,
@@ -29,15 +33,18 @@ import {
 
 import { 
   TodoItem, 
-  getTodoListOfDone,
-  getTodoListOfTodo,
-  updateTodoStatus,
-  deleteTodo,
+  UpdateTodoParams,
+  updateTodo,
 } from '../../apis';
 
 import {
   alert,
+  alertWithButton,
 } from '../../m'
+
+import {
+  toDate, formatDate,
+} from '../../utils'
 
 type InputIdentify = '' | 'title' | 'content' | 'date'
 
@@ -46,17 +53,24 @@ interface Props {
 
 interface State {
   editing: boolean,
-  todoItem: TodoItem | undefined,
+  todoItem: TodoItem,
   currentIdentify: InputIdentify,
+
+  title: string,
+  content: string,
+  dateValue: Date,
 }
 
 const PARAM_TODO_ITEM = 'todo_item'
+const PARAM_ON_UPDATE_TODO_SUCCESS = 'on_update_todo_success'
 
 export const TODO_DETAIL_SCREEN_NAME = 'TodoDetailScreen'
 
-export function gotoTodoDetailScreen(navigation: NavigationScreenProp<any>, todoItem: TodoItem) {
+export function gotoTodoDetailScreen(navigation: NavigationScreenProp<any>, 
+    todoItem: TodoItem, onUpdateTodoSuccess: () => void) {
   navigation.navigate(TODO_DETAIL_SCREEN_NAME, {
     [PARAM_TODO_ITEM]: todoItem,
+    [PARAM_ON_UPDATE_TODO_SUCCESS]: onUpdateTodoSuccess,
   })
 }
 
@@ -71,14 +85,23 @@ export class TodoDetailScreen extends Component<Props & NavigationInjectedProps,
 
   readonly state = {
     editing: false,
-    todoItem: undefined,
+    todoItem: {} as TodoItem,
     currentIdentify: '' as InputIdentify,
+
+    title: '',
+    content: '',
+    dateValue: new Date(),
   }
 
   componentDidMount() {
     const { navigation } = this.props
-    const todoItem = navigation.getParam(PARAM_TODO_ITEM)
-    this.setState({ todoItem: {...todoItem} })
+    const todoItem: TodoItem = navigation.getParam(PARAM_TODO_ITEM)
+    this.setState({ 
+      todoItem: {...todoItem},
+      title: todoItem.title,
+      content: todoItem.content,
+      dateValue: toDate(todoItem.dateStr) as Date,
+    })
   }
 
   onEditPress = () => {
@@ -86,11 +109,39 @@ export class TodoDetailScreen extends Component<Props & NavigationInjectedProps,
   }
 
   onCancelPress = () => {
-    this.setState({  editing: false })
+    this.setState(prevState => {
+      return {
+        editing: false,
+        title: prevState.todoItem.title,
+        content: prevState.todoItem.content,
+        dateValue: toDate(prevState.todoItem.dateStr) as Date,
+      }
+    })
   }
 
   onFinishPress = () => {
     this.setState({  editing: false })
+
+    const { title, content, dateValue, todoItem } = this.state
+    updateTodo(todoItem.id, {
+      title,
+      content,
+      date: formatDate(dateValue),
+      status: todoItem.status,
+      type: todoItem.type,
+      priority: todoItem.priority,
+    }).then(() => {
+      alertWithButton('温馨提示', '修改待办事项成功', '确定', () => {
+        // 返回上一个页面
+        const { navigation } = this.props
+        navigation.goBack()
+        // 回调以便刷新 TODO 列表
+        const onUpdateTodoSuccess = navigation.getParam(PARAM_ON_UPDATE_TODO_SUCCESS, undefined)
+        onUpdateTodoSuccess && onUpdateTodoSuccess()
+      })
+    }).catch(e => {
+      alert(e.message)
+    })
   }
 
   renderSectionTitle(icSource: number, text: string) {
@@ -111,35 +162,64 @@ export class TodoDetailScreen extends Component<Props & NavigationInjectedProps,
       <View style={[styles.textInpuContainer, { borderColor }]}>
         <TextInput
           value={value}
+          editable={editing}
           onFocus={() => this.setState({ currentIdentify: inputIdentify })}
           onBlur={() => this.setState({ currentIdentify: '' })}
+          onChangeText={text => {
+            if (currentIdentify == 'title') {
+              this.setState({ title: text })
+            } else if (currentIdentify == 'content') {
+              this.setState({ content: text })
+            } else {
+              console.log('date is can not edit form TextInput.')
+            }
+          }}
         />
       </View>
     )
   }
 
   render() {
-    const { editing, todoItem, currentIdentify} = this.state
+    const { 
+      editing, 
+      todoItem, 
+      currentIdentify,
+      title,
+      content,
+      dateValue,
+    } = this.state
+
     if (!todoItem) {
       return null
     }
+
     const item = todoItem as TodoItem
+    const titleShow = editing ? title : item.title
+    const contentShow = editing ? content : item.content
     return (
       <View style={sheets.screenContent}>
         <ScrollView style={styles.scrollView}>
           { this.renderSectionTitle(images.icDiscovery, '标题') }
-          { this.renderTextInput(item.title, editing, currentIdentify, 'title') }
+          { this.renderTextInput(titleShow, editing, currentIdentify, 'title') }
 
           { this.renderSectionTitle(images.icDoc, '内容') }
-          { this.renderTextInput(item.content, editing, currentIdentify, 'content') }
+          { this.renderTextInput(contentShow, editing, currentIdentify, 'content') }
 
           { this.renderSectionTitle(images.icCalendar, '日期') }
-          { this.renderTextInput(item.dateStr, editing, currentIdentify, 'date') }
+          { 
+            editing ? (
+              <DatePickerView 
+                mode='date'
+                value={dateValue}
+                onChange={value => this.setState({ dateValue: value })}
+              />
+            ) : this.renderTextInput(item.dateStr, editing, currentIdentify, 'date') 
+          }
           
           <View style={styles.buttonsContainer}>
-            { editing ? null : <Text style={styles.button} onPress={this.onEditPress}>编辑</Text>}
+            { editing ? null : <Text style={styles.button} onPress={this.onEditPress}>修改</Text>}
             { editing ? <Text style={styles.button} onPress={this.onCancelPress}>取消</Text> : null}
-            { editing ? <Text style={styles.button} onPress={this.onFinishPress}>完成</Text> : null}
+            { editing ? <Text style={styles.button} onPress={this.onFinishPress}>完成修改</Text> : null}
           </View>
         </ScrollView>
       </View>

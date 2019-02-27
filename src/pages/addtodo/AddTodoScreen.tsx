@@ -36,11 +36,11 @@ import {
 
 import { 
   addTodo,
-  AddTodoParam,
 } from '../../apis';
 
 import {
-  alert, alertWithButton,
+  alert, 
+  alertWithButton,
 } from '../../m'
 
 import {
@@ -120,6 +120,8 @@ export class AddTodoScreen extends Component<Props & NavigationInjectedProps, St
         const onAddTodoSuccess = navigation.getParam(PARAM_ON_ADD_TODO_SUCCESS, undefined)
         onAddTodoSuccess && onAddTodoSuccess()
       })
+    }).catch(e => {
+      alert(e.message)
     })
   }
 

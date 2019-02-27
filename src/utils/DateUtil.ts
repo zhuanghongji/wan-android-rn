@@ -20,7 +20,12 @@ export function formatDateStr(dateStr: string) {
   return `${year}-${month}-${day}`
 }
 
-export function toDate(dateStr: string): Date | null {
+export function toDate(dateStr?: string): Date {
+  const date = new Date()
+  if (!dateStr) {
+    return date
+  }
+
   let year: string
   let month: string
   let day: string
@@ -33,9 +38,8 @@ export function toDate(dateStr: string): Date | null {
     month = dateStr.substring(4, 6)
     day = dateStr.substring(6, 8)
   } else {
-    return null
+    return date
   }
-  const date = new Date()
   date.setFullYear(Number(year), Number(month), Number(day))
   return date
 }
