@@ -2,13 +2,17 @@
 
 WAN ANDROID 客户端 - React Native 实现版
 
+
 ## 概述
 
 [WAN ANDROID](http://www.wanandroid.com/) ，一个优质的 Android 站点。
 
-该站汇总 Android 相关的项目、知识体系、公众号文章和工具等，你可在站内看到最新的博文和发现最新的项目，同时你可以利用一些工具来提高开发效率。
+WAN ANDROID 站点汇总了 Android 相关的项目、知识体系、公众号文章和工具：
 
-本项目是利用该站的开放 API 进行开发的，待完善的相关项目还有：
+* 在站内你可以及时看到业界最新的博客文章、发现最新的项目
+* 同时你也可以利用站点提供的一些工具（比如正则、二维码生成..）来提高开发效率。
+
+本仓库是一个基于 WAN ANDROID 开放 API 开发的 React Native 项目，相关的项目还有：
 
 * wan-android-rn
 * [wan-android-kt](https://github.com/zhuanghongji/wan-android-kt)
@@ -19,58 +23,80 @@ WAN ANDROID 客户端 - React Native 实现版
 
 ```
 ├ src  
-   ├ assets               资产
-   ├ components           组件
+   ├ apis                             wanandroid apis
       ├ ...
-      └ index.js 
-   ├ res                  资源
-      ├ images            图片
-      ├ colors            颜色
-      ├ dimensions         尺寸
-      ├ fontSizes          文字大小
-      ├ sheets            通用样式
-      └ index.js      
-   ├ modules
-      ├ main              首页
-         ├ article        文章
-         ├ explore        发现
-         ├ mine           我的
-         └ todo           待办
-      ├ navigation        导航
-      ├ project           项目
-      ├ search            搜索
-      ├ sites             常用网站
-      └ web               通用网页
-   └ routes
-├ App.js
+      └ index.ts
+   ├ components                       自定义组件目录
+      ├ ...
+      └ index.ts 
+   ├ m                                RN API 封装目录 
+      ├ ...                      
+      └ index.ts 
+   ├ managers                         管理模块目录
+      ├ HttpManager.ts                管理网络请求
+      └ StorageManager.ts             管理本地存储   
+   ├ pages                            页面目录
+      ├ main                          首页目录
+         ├ article                    文章目录
+             ├ ArticleBannerView.tsx  轮播图组件
+             ├ ArticleItemView.tsx    文章列表项组件
+             ├ ArticleScreen.tsx      文章页面
+         ├ explore                    发现页目录
+         ├ mine                       我的页目录
+         └ todo                       待办页目录
+      ├ navigation                    导航页目录
+      ├ project                       项目页目录
+      ├ search                        搜索页目录
+      ├ sites                         常用网站页目录
+      ├ web                           通用网页页面页目录
+      └ index.ts            
+   ├ res                              资源目录
+      ├ images                        图片目录
+         ├ files                      图片文件目录
+         └ index.ts
+      ├ colors.ts                     颜色
+      ├ dimensions.ts                 尺寸
+      ├ fontSizes.ts                  文字大小
+      ├ sheets.ts                     通用样式
+      └ index.ts   
+   ├ stacks                           页面栈目录
+   ├ App.tsx                          根组件
+   └ RootStack.tsx                    根页面栈   
 ├ app.json
-├ index.js
+└ index.js
 ```
 
 ## 依赖
 
+* @ant-design/react-native
 * react-native-swiper
 * react-navigation
-* jest
 * typescript
+* jest
 
 
 ## 截图
 
-| 主页 | 发现
-| -- | -- 
-| <img src="./screenshots/1.png"/> | <img src="./screenshots/3.png"/>
+| 主页 | 代办 | 发现 | 我的
+| -- | -- | -- | --  
+| <img src="./screenshots/1.png"/> | .....TBD..... | <img src="./screenshots/3.png"/> | .....TBD.....
 
 
-## 版本信息
+## 计划
 
-* [ ] **1.0.0** 
-* 启动：启动页支持动画。
-* 登录：支持账号密码登录功能。
-* 文章：文章列表、文章详情。
-* 待办：支持增删改查待办事项。
-* 发现：导航、体系、项目、常用网站。
-* 我的：个人信息、设置。
+* [ ] 增加启动页，并支持动画
+* [x] 支持账号密码登录功能
+* [x] 文章列表、文章详情
+* [x] 支持增删改查待办事项
+* [x] 发现页面：导航、体系、项目、常用网站
+* [ ] 发现页面：增加常用公众号入口
+* [ ] 我的页面：个人信息、我的收藏、设置
+
+[]() 
+
+* [ ] 接口数据支持缓存，并支持设置缓存策略
+* [ ] 使用 Redux 进行状态管理
+* [ ] 适配 Android
 
 
 ## License
