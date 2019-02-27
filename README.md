@@ -79,8 +79,9 @@ WAN ANDROID 站点汇总了 Android 相关的项目、知识体系、公众号�
 
 | 主页 | 代办 | 发现 | 我的
 | -- | -- | -- | --  
-| <img src="./screenshots/1.png"/> | .....TBD..... | <img src="./screenshots/3.png"/> | .....TBD.....
+| <img src="./screenshots/1.png"/> | <img src="./screenshots/2.png"/> | <img src="./screenshots/3.png"/> | <img src="./screenshots/4.png"/>
 
+[点击查看更多](./screenshots/)
 
 ## 计划
 
