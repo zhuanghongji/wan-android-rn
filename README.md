@@ -16,7 +16,7 @@ WAN ANDROID 站点汇总了 Android 相关的项目、知识体系、公众号�
 
 * wan-android-rn
 * [wan-android-kt](https://github.com/zhuanghongji/wan-android-kt)
-* [wan-android-swift](https://github.com/zhuanghongji/wan-android-swift)
+* [wan-android-flutter](https://github.com/zhuanghongji/wan-android-flutter)
 
 
 ## 代码结构
